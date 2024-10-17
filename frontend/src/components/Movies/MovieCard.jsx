@@ -1,15 +1,17 @@
-import React from 'react';
-import './MovieCard.css';
+import React from "react";
+import "./MovieCard.css";
 
 const MovieCard = ({ movie }) => {
   return (
-      <main class="wrapper">
-        <article class="card">
-            <img src="https://picsum.photos/200" alt="John Wick 3" />
-            <h3>John Wick</h3>
-        </article>
+    <main class="wrapper">
+      <article class="movie-card">
+        <img
+          src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+          alt={movie.title}
+        />
+      </article>
     </main>
-  )
-}
+  );
+};
 
-export default MovieCard
+export default MovieCard;

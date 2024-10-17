@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import '@picocss/pico/css/pico.min.css'; 
-import { useAuthStore } from '../../store/authStore';
-import Spinner from '../common/Spinner';
+import "@picocss/pico/css/pico.min.css";
+import { useAuthStore } from "../../store/authStore";
+import Spinner from "../common/Spinner";
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: ''
+    username: "",
+    email: "",
+    password: "",
   });
   const navigate = useNavigate();
   const { signup, error, isLoading } = useAuthStore();
@@ -17,27 +17,27 @@ const Register = () => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value
+      [name]: value,
     });
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Handle form submission logic here
-    console.log('Form data submitted:', formData);
+    console.log("Form data submitted:", formData);
 
     try {
       await signup(formData.email, formData.password, formData.username);
-      navigate("/")
-    } catch (error) {
-      
-    }
-
+      navigate("/");
+    } catch (error) {}
   };
 
   return (
     <main className="container">
-      <article className="card" style={{ maxWidth: '500px', margin: 'auto', padding: '1.5rem' }}>
+      <article
+        className="card"
+        style={{ maxWidth: "500px", margin: "auto", padding: "1.5rem" }}
+      >
         <header>
           <h2>Sign Up</h2>
         </header>
@@ -77,15 +77,21 @@ const Register = () => {
           />
 
           {error && <small id="invalid-helper"> {error} </small>}
-          
+
           {/* //check pico for animations */}
-          <button type="submit" className="primary" disabled={isLoading}>
-            {isLoading ? <Spinner /> : "Sign Up"} 
+          <button
+            type="submit"
+            disabled={isLoading}
+            aria-label={isLoading ? "Please wait…" : null}
+          >
+            {isLoading ? "" : "Register"}
           </button>
         </form>
 
         <footer>
-          <p>Already have an account? <a href="/login">Login here</a></p>
+          <p>
+            Already have an account? <a href="/login">Login here</a>
+          </p>
         </footer>
       </article>
     </main>

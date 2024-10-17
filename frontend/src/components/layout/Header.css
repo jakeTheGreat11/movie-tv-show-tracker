@@ -1,0 +1,9 @@
+[role="group"],
+[role="search"] {
+  margin-bottom: 0%;
+}
+
+.search-input {
+  background-color: var(--primary-green);
+  border-color: var(--primary-green);
+}

@@ -1,0 +1,47 @@
+.movie-list-container {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  margin: 20px 0;
+}
+
+.movie-list-title {
+  width: 30%;
+
+  margin-bottom: 10px;
+  color: var(--text-color);
+}
+
+.movie-list {
+  display: flex;
+  justify-content: flex-start;
+  width: 60%; /* Adjust width to account for button width */
+  padding-bottom: 10px;
+}
+
+.list-button {
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  position: absolute; /* Fix buttons outside the movie list */
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2; /* Ensure buttons are above the movie cards */
+  background-color: var(--primary-green);
+  color: var(--button-text-color);
+}
+
+.prev-button {
+  left: 10px; /* Adjust distance from the left */
+}
+
+.next-button {
+  right: 10px; /* Adjust distance from the right */
+}
+@media (max-width: 768px) {
+  button {
+    width: 0%;
+    padding: 0.8em;
+  }
+}
