@@ -1,0 +1,45 @@
+# Node.js
+/node_modules
+/.env
+/dist
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Vite
+/dist
+/.cache
+/vite.svg
+
+# macOS
+.DS_Store
+
+# Editor directories and files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Node.js deployment
+/.env.local
+/.env.development.local
+/.env.test.local
+/.env.production.local
+.env*
+
+# Build outputs
+build/
+dist/
+
+# Dependency directories
+node_modules/
+
+# npm
+package-lock.json
+yarn.lock
+
+# Temporary files
+*.tmp
+*.swp
