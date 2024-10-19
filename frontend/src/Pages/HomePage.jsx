@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useMovieStore } from "../store/movieStore";
 import MovieList from "../components/Movies/MovieList";
+import "./HomePage.css";
 
 const MovieLists = () => {
   const {
@@ -32,16 +33,14 @@ const MovieLists = () => {
   if (error) return <div>{error}</div>;
 
   return (
-    <div>
-      {/* Render the Popular Movies List */}
+    <div className="movie-lists">
       <MovieList title="Popular Movies" movies={popularMovies} />
 
-      {/* Render the New Movies List */}
-      <MovieList title="New Releases" movies={nowPlayingMovies} />
+      <MovieList title="New Released Movies" movies={nowPlayingMovies} />
 
-      <MovieList title="Top Rated" movies={topRatedMovies} />
+      <MovieList title="Top Rated Movies" movies={topRatedMovies} />
 
-      <MovieList title="New Releases" movies={upcomingMovies} />
+      <MovieList title="Upcoming Movies" movies={upcomingMovies} />
     </div>
   );
 };

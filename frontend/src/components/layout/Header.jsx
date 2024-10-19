@@ -3,11 +3,13 @@ import "./Header.css";
 
 const Header = () => {
   return (
-    <div>
+    <div className="website-header">
       <nav>
         <ul>
           <li>
-            <strong>jake tracker</strong>
+            <strong>
+              <a href="/">jake tracker</a>
+            </strong>
           </li>
         </ul>
         <ul>

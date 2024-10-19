@@ -6,7 +6,7 @@
   --dark-green: #0b6623; /* Forest Green */
   --light-green: #ccf6d3; /* Light Pastel Green */
   --text-color: #333; /* Dark Text */
-  --background-color: #f4f4f4; /* Background Color */
+  --background-color: #f4f4f4;
   --button-text-color: white;
 
   font-family: "Inter", system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -23,4 +23,10 @@ body {
   margin: 0 auto;
   background-color: var(--background-color);
   color: var(--text-color);
+}
+.website-header,
+.website-footer {
+  padding: 0 0;
+  max-width: none;
+  width: 100%; /* Full width */
 }

@@ -3,12 +3,11 @@
   justify-content: center;
   position: relative;
   width: 100%;
-  margin: 20px 0;
+  margin: 0px 0px 20px 0px;
 }
 
 .movie-list-title {
-  width: 30%;
-
+  width: 40%;
   margin-bottom: 10px;
   color: var(--text-color);
 }
