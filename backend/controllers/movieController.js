@@ -84,7 +84,7 @@ export const getDiscoverMovies = async (req, res) => {
     sort_by: sort_by || "popularity.desc",
     with_genres: genre || "",
     primary_release_year: primary_release_year || "",
-    language: language || "en-US",
+    with_original_language: language || "en-US",
     vote_average_gte: rating || undefined,
     page: page, //dont forget to include page
   };

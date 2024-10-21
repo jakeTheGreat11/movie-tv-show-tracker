@@ -82,20 +82,20 @@ export const useMovieStore = create((set) => ({
     }
   },
 
-  fetchDiscoverMovies: async (page = 1) => {
+  fetchDiscoverMovies: async (page = 1, language) => {
     set({ loading: true, error: null });
     try {
       const response = await axios.get(`${API_URL}/discover`, {
-        params: { page },
+        params: { page, language },
       });
-      console.log("fetchDiscoverMovies: ", response);
+      console.log("fetch discoverd movies response: ", response);
       set((state) => ({
         discoverMovies: response.data.movies, //might not work [...state.discoverMovies, ...response.data.movies]
         isLoading: false,
       }));
     } catch (error) {
       set({
-        error: error.response.data.message || "Error fetching the movies.",
+        error: error || "Error fetching the movies.",
         isLoading: false,
       });
       throw error;
@@ -103,13 +103,14 @@ export const useMovieStore = create((set) => ({
   },
 
   fetchLanguages: async () => {
-    set({ loading: true, error: null });
+    set({ isLoading: true, error: null });
     try {
-      const response = await axios.get(`http://localhost:5000/api/languages`); //make sure right endpoint
-      set({ languages: response.data.languages, isLoading: false });
+      const response = await axios.get(`http://localhost:5000/api/languages`);
+      const languagesArray = response.data; // Extract the languages array
+      set({ languages: languagesArray, isLoading: false });
     } catch (error) {
       set({
-        error: error.response.data.message || "Error fetching languages.",
+        error: error || "Error fetching languages.",
         isLoading: false,
       });
       throw error;

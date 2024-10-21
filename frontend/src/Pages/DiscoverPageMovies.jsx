@@ -5,31 +5,22 @@ import { useMovieStore } from "../store/movieStore";
 import MovieCard from "../components/Movies/MovieCard";
 
 const DiscoverPageMovies = (path) => {
-  const {
-    fetchLanguages,
-    fetchDiscoverMovies,
-    languages,
-    discoverMovies,
-    isLoading,
-    error,
-  } = useMovieStore();
+  const { fetchDiscoverMovies, discoverMovies, isLoading, error } =
+    useMovieStore();
 
   const [selectedLanguage, setSelectedLanguage] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    fetchLanguages(); // Fetch language list on component mount
-  }, [fetchLanguages]);
-  useEffect(() => {
     fetchDiscoverMovies(currentPage, selectedLanguage);
-  }, [path, selectedLanguage, currentPage, fetchDiscoverMovies]);
+  }, [selectedLanguage, currentPage, fetchDiscoverMovies]);
 
   const handleLanguageChange = (language) => {
-    setSelectedLanguage(language); // Update selected language
+    setSelectedLanguage(language);
   };
 
   const handleSearch = () => {
-    fetchDiscoverMovies();
+    fetchDiscoverMovies(currentPage, selectedLanguage);
   };
   const loadMoreMovies = () => {
     setCurrentPage((prevPage) => prevPage + 1); // Load more movies
@@ -38,12 +29,11 @@ const DiscoverPageMovies = (path) => {
   return (
     <div className="discover-page">
       <aside className="filters-sidebar">
-        <h2>Filter Movies</h2>
-        {/* <LanguagesDropdown
-          languages={languages}
-          onLanguageChange={handleLanguageChange}
-        /> */}
-        <button onClick={handleSearch}>Search</button>
+        <form onSubmit={handleSearch}>
+          <h2>Filter Movies</h2>
+          <LanguagesDropdown onLanguageChange={handleLanguageChange} />
+          <button type="submit">Search</button>
+        </form>
       </aside>
 
       <main className="movies-content">
