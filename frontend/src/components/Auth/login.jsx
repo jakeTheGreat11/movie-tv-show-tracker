@@ -16,7 +16,7 @@ const login = () => {
   };
 
   return (
-    <main>
+    <main className="container" style={{ padding: "48px" }}>
       <article
         className="card"
         style={{ maxWidth: "500px", margin: "auto", padding: "1.5rem" }}
@@ -61,7 +61,7 @@ const login = () => {
           <button
             type="submit"
             disabled={isLoading}
-            aria-label={isLoading ? "Please wait…" : null}
+            aria-busy={isLoading ? true : false}
             style={{
               backgroundColor: "var(--primary-green)",
               borderColor: "var(--primary-green)",

@@ -1,0 +1,29 @@
+.discover-page {
+  display: flex;
+}
+
+.filters-sidebar {
+  width: 20%; /* Adjust as needed */
+  padding: 20px;
+  background-color: #f0f0f0; /* Optional */
+}
+
+.movies-content {
+  width: 80%; /* Adjust as needed */
+  padding: 20px;
+}
+
+.movies-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 movies per row */
+  gap: 20px;
+}
+
+.movie-card {
+  text-align: center;
+}
+
+.movie-card img {
+  max-width: 100%;
+  border-radius: 10px;
+}

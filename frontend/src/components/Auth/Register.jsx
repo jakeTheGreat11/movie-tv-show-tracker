@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "@picocss/pico/css/pico.min.css";
 import { useAuthStore } from "../../store/authStore";
-import Spinner from "../common/Spinner";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -36,7 +35,13 @@ const Register = () => {
     <main className="container">
       <article
         className="card"
-        style={{ maxWidth: "500px", margin: "auto", padding: "1.5rem" }}
+        style={{
+          maxWidth: "500px",
+          margin: "auto",
+          padding: "1.2rem",
+          marginTop: "5px",
+          marginBottom: "10px",
+        }}
       >
         <header>
           <h2>Sign Up</h2>
@@ -82,7 +87,7 @@ const Register = () => {
           <button
             type="submit"
             disabled={isLoading}
-            aria-label={isLoading ? "Please wait…" : null}
+            aria-busy={isLoading ? true : false}
           >
             {isLoading ? "" : "Register"}
           </button>

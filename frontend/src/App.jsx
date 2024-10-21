@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import HomePage from "./Pages/HomePage";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
+import DiscoverPageMovies from "./Pages/DiscoverPageMovies";
 
 // redirect authenticated user to home page
 const RedirectAuthenticatedUser = ({ children }) => {
@@ -69,6 +70,7 @@ function App() {
             </RedirectAuthenticatedUser>
           }
         />
+        <Route path="/movies/discover" element={<DiscoverPageMovies />} />
       </Routes>
       {!isAuthPage && <Footer />}
     </>

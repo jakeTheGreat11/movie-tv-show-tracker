@@ -8,13 +8,19 @@ export const useMovieStore = create((set) => ({
   nowPlayingMovies: [],
   upcomingMovies: [],
   topRatedMovies: [],
+  discoverMovies: [],
+  currentPage: 1,
+  totalPages: 1,
+  languages: [],
   isLoading: false,
   error: null,
 
-  fetchPopularMovies: async () => {
+  fetchPopularMovies: async (page = 1) => {
     set({ loading: true, error: null });
     try {
-      const response = await axios.get(`${API_URL}/popular`);
+      const response = await axios.get(`${API_URL}/popular`, {
+        params: { page },
+      });
       console.log(response);
       set({ popularMovies: response.data.movies, isLoading: false });
     } catch (error) {
@@ -25,10 +31,12 @@ export const useMovieStore = create((set) => ({
       throw error;
     }
   },
-  fetchNowPlayingMovies: async () => {
+  fetchNowPlayingMovies: async (page = 1) => {
     set({ loading: true, error: null });
     try {
-      const response = await axios.get(`${API_URL}/now-playing`);
+      const response = await axios.get(`${API_URL}/now-playing`, {
+        params: { page },
+      });
       console.log(response);
       set({ nowPlayingMovies: response.data.movies, isLoading: false });
     } catch (error) {
@@ -40,10 +48,12 @@ export const useMovieStore = create((set) => ({
     }
   },
 
-  fetchUpcomingMovies: async () => {
+  fetchUpcomingMovies: async (page = 1) => {
     set({ loading: true, error: null });
     try {
-      const response = await axios.get(`${API_URL}/upcoming`);
+      const response = await axios.get(`${API_URL}/upcoming`, {
+        params: { page },
+      });
       console.log(response);
       set({ upcomingMovies: response.data.movies, isLoading: false });
     } catch (error) {
@@ -55,15 +65,51 @@ export const useMovieStore = create((set) => ({
     }
   },
 
-  fetchTopRatedMovies: async () => {
+  fetchTopRatedMovies: async (page = 1) => {
     set({ loading: true, error: null });
     try {
-      const response = await axios.get(`${API_URL}/top-rated`);
+      const response = await axios.get(`${API_URL}/top-rated`, {
+        params: { page },
+      });
       console.log(response);
       set({ topRatedMovies: response.data.movies, isLoading: false });
     } catch (error) {
       set({
         error: error.response.data.message || "Error fetching the movies.",
+        isLoading: false,
+      });
+      throw error;
+    }
+  },
+
+  fetchDiscoverMovies: async (page = 1) => {
+    set({ loading: true, error: null });
+    try {
+      const response = await axios.get(`${API_URL}/discover`, {
+        params: { page },
+      });
+      console.log("fetchDiscoverMovies: ", response);
+      set((state) => ({
+        discoverMovies: response.data.movies, //might not work [...state.discoverMovies, ...response.data.movies]
+        isLoading: false,
+      }));
+    } catch (error) {
+      set({
+        error: error.response.data.message || "Error fetching the movies.",
+        isLoading: false,
+      });
+      throw error;
+    }
+  },
+
+  fetchLanguages: async () => {
+    set({ loading: true, error: null });
+    try {
+      const response = await axios.get(`http://localhost:5000/api/languages`); //make sure right endpoint
+      set({ languages: response.data.languages, isLoading: false });
+    } catch (error) {
+      set({
+        error: error.response.data.message || "Error fetching languages.",
         isLoading: false,
       });
       throw error;
