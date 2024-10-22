@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import { useMovieStore } from "../../store/movieStore";
+import { useDiscoverStore } from "../../store/useDiscoverStore";
 
-const LanguagesDropdown = ({ onLanguageChange }) => {
-  const { languages, fetchLanguages } = useMovieStore();
+const LanguagesDropdown = () => {
+  const { languages, fetchLanguages, setSelectedLanguage } = useDiscoverStore();
 
   useEffect(() => {
     fetchLanguages();
@@ -10,7 +10,7 @@ const LanguagesDropdown = ({ onLanguageChange }) => {
 
   const handleLanguageChange = (e) => {
     const selectedLanguage = e.target.value;
-    onLanguageChange(selectedLanguage);
+    setSelectedLanguage(selectedLanguage);
   };
 
   const sortedLanguages = languages
@@ -23,6 +23,9 @@ const LanguagesDropdown = ({ onLanguageChange }) => {
     <div className="languages-dropdown">
       <label htmlFor="languages">Select Language:</label>
       <select id="languages" onChange={handleLanguageChange}>
+        <option selected disabled value="">
+          None selected
+        </option>
         {sortedLanguages.length > 0 ? (
           sortedLanguages.map((lang) => (
             <option key={lang.iso_639_1} value={lang.iso_639_1}>

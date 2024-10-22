@@ -1,5 +1,7 @@
 .discover-page {
   display: flex;
+  align-items: flex-start;
+  margin-top: 60px;
 }
 
 .filters-sidebar {

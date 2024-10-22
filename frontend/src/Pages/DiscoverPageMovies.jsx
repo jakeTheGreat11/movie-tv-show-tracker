@@ -1,38 +1,59 @@
 import React, { useState, useEffect } from "react";
 import LanguagesDropdown from "../components/common/LanguagesDropdown";
 import "./DiscoverPageMovies.css";
-import { useMovieStore } from "../store/movieStore";
 import MovieCard from "../components/Movies/MovieCard";
+import RangeSlider from "../components/common/MovieScoreSlider";
+import { useDiscoverStore } from "../store/useDiscoverStore";
 
 const DiscoverPageMovies = (path) => {
-  const { fetchDiscoverMovies, discoverMovies, isLoading, error } =
-    useMovieStore();
-
-  const [selectedLanguage, setSelectedLanguage] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
+  const {
+    fetchDiscoverMovies,
+    discoverMovies,
+    setCurrentPage,
+    currentPage,
+    selectedLanguage,
+    minMovieRating,
+    isLoading,
+    error,
+  } = useDiscoverStore();
 
   useEffect(() => {
-    fetchDiscoverMovies(currentPage, selectedLanguage);
-  }, [selectedLanguage, currentPage, fetchDiscoverMovies]);
+    fetchDiscoverMovies(currentPage, selectedLanguage, minMovieRating);
+  }, [currentPage, fetchDiscoverMovies]);
 
-  const handleLanguageChange = (language) => {
-    setSelectedLanguage(language);
-  };
-
-  const handleSearch = () => {
-    fetchDiscoverMovies(currentPage, selectedLanguage);
+  const handleSearch = (e) => {
+    e.preventDefault();
+    // setIsNewQuery(true);
+    setCurrentPage(1);
+    fetchDiscoverMovies(1, selectedLanguage, minMovieRating);
   };
   const loadMoreMovies = () => {
-    setCurrentPage((prevPage) => prevPage + 1); // Load more movies
+    setCurrentPage(currentPage + 1); // Load more movies
   };
 
   return (
-    <div className="discover-page">
-      <aside className="filters-sidebar">
+    <div className="discover-page card">
+      <aside
+        className="filters-sidebar"
+        style={{
+          boxShadow: "0px 0px 54px 11px rgba(0,0,0,0.28)",
+        }}
+      >
         <form onSubmit={handleSearch}>
           <h2>Filter Movies</h2>
-          <LanguagesDropdown onLanguageChange={handleLanguageChange} />
-          <button type="submit">Search</button>
+          <LanguagesDropdown />
+          <hr />
+          <RangeSlider />
+
+          <button
+            type="submit"
+            style={{
+              backgroundColor: "var(--primary-green)",
+              borderColor: "var(--primary-green)",
+            }}
+          >
+            Search
+          </button>
         </form>
       </aside>
 

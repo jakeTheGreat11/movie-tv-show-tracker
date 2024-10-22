@@ -76,6 +76,8 @@ export const getDiscoverMovies = async (req, res) => {
     rating,
     page = 1,
   } = req.query;
+  console.log(req.query);
+  console.log(rating);
 
   const url = `https://api.themoviedb.org/3/discover/movie`;
 
@@ -84,13 +86,16 @@ export const getDiscoverMovies = async (req, res) => {
     sort_by: sort_by || "popularity.desc",
     with_genres: genre || "",
     primary_release_year: primary_release_year || "",
-    with_original_language: language || "en-US",
-    vote_average_gte: rating || undefined,
-    page: page, //dont forget to include page
+    "vote_average.gte": rating || undefined,
+    page: page,
   };
+  if (language) {
+    params.with_original_language = language;
+  }
 
+  console.log(params);
   try {
-    const response = await axios.get(url, { params }); //might not work due to request params not sent right
+    const response = await axios.get(url, { params });
     const movies = response.data.results;
     res.status(200).json({ success: true, movies });
   } catch (error) {

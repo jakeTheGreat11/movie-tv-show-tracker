@@ -31,3 +31,7 @@ button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
+input {
+  background-color: var(--secondary-green);
+  border-color: var(--accent-green);
+}
