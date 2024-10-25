@@ -8,54 +8,90 @@ export const useDiscoverStore = create((set) => ({
   currentPage: 1,
   totalPages: 1,
   selectedLanguage: "",
-  genres: [],
   languages: [],
+  genres: [],
+  selectedGenres: [],
   minMovieRating: 0,
-  isLoading: false,
+  selectedSortBy: "",
+  isMoviesLoading: false,
+  isGenresLoading: false,
+  isLanguagesLoading: false,
   error: null,
+  sortOptions: [
+    { value: "popularity.asc", label: "Popularity Ascending" },
+    { value: "popularity.desc", label: "Popularity Descending" },
+    { value: "release_date.asc", label: "Release Date Ascending" },
+    { value: "release_date.desc", label: "Release Date Descending" },
+    { value: "vote_average.asc", label: "Vote Average Ascending" },
+    { value: "vote_average.desc", label: "Vote Average Descending" },
+    { value: "title.asc", label: "Title A-Z" },
+    { value: "title.desc", label: "Title Z-A" },
+  ],
 
   setDiscoverMovies: (movies) => set({ discoverMovies: movies }),
   setCurrentPage: (page) => set({ currentPage: page }),
   setSelectedLanguage: (language) => set({ selectedLanguage: language }),
-  setGenres: (genres) => set({ genres }),
-  setLanguages: (languages) => set({ languages }),
   setMinMovieRating: (rating) => set({ minMovieRating: rating }),
+  setSortBy: (sortby) => set({ selectedSortBy: sortby }),
+  setSelectedGenres: (genre) =>
+    set((state) => {
+      const isAlreadySelected = state.selectedGenres.includes(genre);
+      return {
+        selectedGenres: isAlreadySelected
+          ? state.selectedGenres.filter((g) => g !== genre)
+          : [...state.selectedGenres, genre],
+      };
+    }),
 
-  fetchDiscoverMovies: async (page = 1, language, rating) => {
-    set({ loading: true, error: null });
+  // Fetching Movies with language and rating filters
+  fetchDiscoverMovies: async (page = 1, language, rating, genres, sort_by) => {
+    set({ isMoviesLoading: true, error: null });
+    const genre = genres.join(",");
+
     try {
       const response = await axios.get(`${API_URL}/movies/discover`, {
-        params: { page, language, rating },
+        params: { page, language, rating, genre, sort_by },
       });
-      console.log("fetch discoverd movies response: ", response);
       set((state) => ({
         discoverMovies:
           page === 1
             ? response.data.movies
-            : [...state.discoverMovies, ...response.data.movies], // response.data.movies, //might not work [...state.discoverMovies, ...response.data.movies]
-        isLoading: false,
+            : [...state.discoverMovies, ...response.data.movies], // For loading more movies
+        isMoviesLoading: false,
       }));
     } catch (error) {
       set({
         error: error || "Error fetching the movies.",
-        isLoading: false,
+        isMoviesLoading: false,
       });
-      throw error;
     }
   },
 
+  // Fetching Languages
   fetchLanguages: async () => {
-    set({ isLoading: true, error: null });
+    set({ isLanguagesLoading: true, error: null });
     try {
       const response = await axios.get(`${API_URL}/languages`);
-      const languagesArray = response.data; // Extract the languages array
-      set({ languages: languagesArray, isLoading: false });
+      set({ languages: response.data, isLanguagesLoading: false });
     } catch (error) {
       set({
         error: error || "Error fetching languages.",
-        isLoading: false,
+        isLanguagesLoading: false,
       });
-      throw error;
+    }
+  },
+
+  // Fetching Genres
+  fetchMovieGenres: async () => {
+    set({ isGenresLoading: true, error: null });
+    try {
+      const response = await axios.get(`${API_URL}/movies/genres`);
+      set({ genres: response.data.genres, isGenresLoading: false });
+    } catch (error) {
+      set({
+        error: error || "Error fetching genres.",
+        isGenresLoading: false,
+      });
     }
   },
 }));

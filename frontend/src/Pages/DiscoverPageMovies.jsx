@@ -4,28 +4,46 @@ import "./DiscoverPageMovies.css";
 import MovieCard from "../components/Movies/MovieCard";
 import RangeSlider from "../components/common/MovieScoreSlider";
 import { useDiscoverStore } from "../store/useDiscoverStore";
+import GenreDropdown from "../components/common/GenreDropdown";
+import SortByDropdown from "../components/common/SortByDropdown";
 
 const DiscoverPageMovies = (path) => {
   const {
     fetchDiscoverMovies,
+    fetchMovieGenres,
+    fetchLanguages,
     discoverMovies,
     setCurrentPage,
     currentPage,
     selectedLanguage,
+    selectedGenres,
     minMovieRating,
-    isLoading,
+    selectedSortBy,
     error,
   } = useDiscoverStore();
 
   useEffect(() => {
-    fetchDiscoverMovies(currentPage, selectedLanguage, minMovieRating);
+    fetchMovieGenres();
+    fetchLanguages();
+    fetchDiscoverMovies(
+      currentPage,
+      selectedLanguage,
+      minMovieRating,
+      selectedGenres,
+      selectedSortBy
+    );
   }, [currentPage, fetchDiscoverMovies]);
 
   const handleSearch = (e) => {
     e.preventDefault();
-    // setIsNewQuery(true);
     setCurrentPage(1);
-    fetchDiscoverMovies(1, selectedLanguage, minMovieRating);
+    fetchDiscoverMovies(
+      1,
+      selectedLanguage,
+      minMovieRating,
+      selectedGenres,
+      selectedSortBy
+    );
   };
   const loadMoreMovies = () => {
     setCurrentPage(currentPage + 1); // Load more movies
@@ -44,6 +62,10 @@ const DiscoverPageMovies = (path) => {
           <LanguagesDropdown />
           <hr />
           <RangeSlider />
+          <hr />
+          <GenreDropdown />
+          <hr />
+          <SortByDropdown />
 
           <button
             type="submit"

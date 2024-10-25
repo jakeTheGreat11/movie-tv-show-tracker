@@ -20,10 +20,10 @@ const Header = () => {
             </form>
           </li>
           <li>
-            <a href="/movies">Movies</a>
+            <a href="/movies/discover">Movies</a>
           </li>
           <li>
-            <a href="/tv-shows">TV Shows</a>
+            <a href="/tv-shows/discover">TV Shows</a>
           </li>
           <li>
             <a href="#">About</a>

@@ -76,8 +76,6 @@ export const getDiscoverMovies = async (req, res) => {
     rating,
     page = 1,
   } = req.query;
-  console.log(req.query);
-  console.log(rating);
 
   const url = `https://api.themoviedb.org/3/discover/movie`;
 
@@ -93,13 +91,30 @@ export const getDiscoverMovies = async (req, res) => {
     params.with_original_language = language;
   }
 
-  console.log(params);
   try {
     const response = await axios.get(url, { params });
     const movies = response.data.results;
-    res.status(200).json({ success: true, movies });
+    res.status(200).json({ success: true, movies: movies });
   } catch (error) {
     console.error("Error fetching movies getDiscoverMovies:", error.message);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+export const getGenres = async (req, res) => {
+  try {
+    const response = await axios.get(
+      `https://api.themoviedb.org/3/genre/movie/list`,
+      {
+        params: {
+          api_key: apiKey,
+        },
+      }
+    );
+    const genres = response.data.genres;
+    res.status(200).json({ success: true, genres });
+  } catch (error) {
+    console.error("Error fetching genres getGenres:", error.message);
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
