@@ -13,6 +13,7 @@ export const useDiscoverStore = create((set) => ({
   selectedGenres: [],
   minMovieRating: 0,
   selectedSortBy: "",
+  selectedYear: "",
   isMoviesLoading: false,
   isGenresLoading: false,
   isLanguagesLoading: false,
@@ -33,6 +34,7 @@ export const useDiscoverStore = create((set) => ({
   setSelectedLanguage: (language) => set({ selectedLanguage: language }),
   setMinMovieRating: (rating) => set({ minMovieRating: rating }),
   setSortBy: (sortby) => set({ selectedSortBy: sortby }),
+  setSelectedYear: (year) => set({ selectedYear: year }),
   setSelectedGenres: (genre) =>
     set((state) => {
       const isAlreadySelected = state.selectedGenres.includes(genre);
@@ -43,14 +45,28 @@ export const useDiscoverStore = create((set) => ({
       };
     }),
 
-  // Fetching Movies with language and rating filters
-  fetchDiscoverMovies: async (page = 1, language, rating, genres, sort_by) => {
+  // Fetching Movies with language rating genre sort_by method and release year filters
+  fetchDiscoverMovies: async (
+    page = 1,
+    language,
+    rating,
+    genres,
+    sort_by,
+    primary_release_year
+  ) => {
     set({ isMoviesLoading: true, error: null });
     const genre = genres.join(",");
 
     try {
       const response = await axios.get(`${API_URL}/movies/discover`, {
-        params: { page, language, rating, genre, sort_by },
+        params: {
+          page,
+          language,
+          rating,
+          genre,
+          sort_by,
+          primary_release_year,
+        },
       });
       set((state) => ({
         discoverMovies:

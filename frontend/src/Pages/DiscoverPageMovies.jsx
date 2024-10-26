@@ -6,6 +6,7 @@ import RangeSlider from "../components/common/MovieScoreSlider";
 import { useDiscoverStore } from "../store/useDiscoverStore";
 import GenreDropdown from "../components/common/GenreDropdown";
 import SortByDropdown from "../components/common/SortByDropdown";
+import YearSelector from "../components/common/YearSelector";
 
 const DiscoverPageMovies = (path) => {
   const {
@@ -17,6 +18,7 @@ const DiscoverPageMovies = (path) => {
     currentPage,
     selectedLanguage,
     selectedGenres,
+    selectedYear,
     minMovieRating,
     selectedSortBy,
     error,
@@ -30,7 +32,8 @@ const DiscoverPageMovies = (path) => {
       selectedLanguage,
       minMovieRating,
       selectedGenres,
-      selectedSortBy
+      selectedSortBy,
+      selectedYear
     );
   }, [currentPage, fetchDiscoverMovies]);
 
@@ -42,7 +45,8 @@ const DiscoverPageMovies = (path) => {
       selectedLanguage,
       minMovieRating,
       selectedGenres,
-      selectedSortBy
+      selectedSortBy,
+      selectedYear
     );
   };
   const loadMoreMovies = () => {
@@ -66,6 +70,8 @@ const DiscoverPageMovies = (path) => {
           <GenreDropdown />
           <hr />
           <SortByDropdown />
+          <hr />
+          <YearSelector />
 
           <button
             type="submit"

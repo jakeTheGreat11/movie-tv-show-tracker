@@ -8,73 +8,94 @@ export const useMovieStore = create((set) => ({
   nowPlayingMovies: [],
   upcomingMovies: [],
   topRatedMovies: [],
-  isLoading: false,
-  error: null,
+  isLoadingPopularMovies: false,
+  isLoadingNowPlayingMovies: false,
+  isLoadingUpcomingMovies: false,
+  isLoadingTopRatedMovies: false,
+  errorPopularMovies: null,
+  errorNowPlayingMovies: null,
+  errorUpcomingMovies: null,
+  errorTopRatedMovies: null,
 
   fetchPopularMovies: async (page = 1) => {
-    set({ loading: true, error: null });
+    set({ isLoadingPopularMovies: true, errorPopularMovies: null });
     try {
       const response = await axios.get(`${API_URL}/popular`, {
         params: { page },
       });
-      console.log(response);
-      set({ popularMovies: response.data.movies, isLoading: false });
+      set({
+        popularMovies: response.data.movies,
+        isLoadingPopularMovies: false,
+      });
     } catch (error) {
       set({
-        error: error.response.data.message || "Error fetching the movies.",
-        isLoading: false,
+        errorPopularMovies:
+          error.response?.data?.message || "Error fetching popular movies.",
+        isLoadingPopularMovies: false,
       });
       throw error;
     }
   },
+
   fetchNowPlayingMovies: async (page = 1) => {
-    set({ loading: true, error: null });
+    set({ isLoadingNowPlayingMovies: true, errorNowPlayingMovies: null });
     try {
       const response = await axios.get(`${API_URL}/now-playing`, {
         params: { page },
       });
-      console.log(response);
-      set({ nowPlayingMovies: response.data.movies, isLoading: false });
+      set({
+        nowPlayingMovies: response.data.movies,
+        isLoadingNowPlayingMovies: false,
+      });
     } catch (error) {
       set({
-        error: error.response.data.message || "Error fetching the movies.",
-        isLoading: false,
+        errorNowPlayingMovies:
+          error.response?.data?.message || "Error fetching now playing movies.",
+        isLoadingNowPlayingMovies: false,
       });
       throw error;
     }
   },
 
   fetchUpcomingMovies: async (page = 1) => {
-    set({ loading: true, error: null });
+    set({ isLoadingUpcomingMovies: true, errorUpcomingMovies: null });
     try {
       const response = await axios.get(`${API_URL}/upcoming`, {
         params: { page },
       });
-      console.log(response);
-      set({ upcomingMovies: response.data.movies, isLoading: false });
+      set({
+        upcomingMovies: response.data.movies,
+        isLoadingUpcomingMovies: false,
+      });
     } catch (error) {
       set({
-        error: error.response.data.message || "Error fetching the movies.",
-        isLoading: false,
+        errorUpcomingMovies:
+          error.response?.data?.message || "Error fetching upcoming movies.",
+        isLoadingUpcomingMovies: false,
       });
       throw error;
     }
   },
 
   fetchTopRatedMovies: async (page = 1) => {
-    set({ loading: true, error: null });
+    set({ isLoadingTopRatedMovies: true, errorTopRatedMovies: null });
     try {
       const response = await axios.get(`${API_URL}/top-rated`, {
         params: { page },
       });
-      console.log(response);
-      set({ topRatedMovies: response.data.movies, isLoading: false });
+      set({
+        topRatedMovies: response.data.movies,
+        isLoadingTopRatedMovies: false,
+      });
     } catch (error) {
       set({
-        error: error.response.data.message || "Error fetching the movies.",
-        isLoading: false,
+        errorTopRatedMovies:
+          error.response?.data?.message || "Error fetching top-rated movies.",
+        isLoadingTopRatedMovies: false,
       });
       throw error;
     }
   },
 }));
+
+// error: error.response.data.message

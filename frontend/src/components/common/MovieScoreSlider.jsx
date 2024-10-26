@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDiscoverStore } from "../../store/useDiscoverStore";
 
-const MovieScoreSlider = (minScore) => {
+const MovieScoreSlider = () => {
   const { setMinMovieRating, minMovieRating } = useDiscoverStore();
   const minValue = 0;
   const maxValue = 10;

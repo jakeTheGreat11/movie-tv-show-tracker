@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import { useMovieStore } from "../store/movieStore";
-import MovieList from "../components/Movies/MovieList";
+import ContentList from "../components/Movies/ContentList";
 import "./HomePage.css";
+import { useTvShowStore } from "../store/tvShowStore";
 
-const MovieLists = () => {
+const HomePage = () => {
   const {
     popularMovies,
     nowPlayingMovies,
@@ -17,32 +18,50 @@ const MovieLists = () => {
     error,
   } = useMovieStore();
 
+  const {
+    airingTodayTvShows,
+    onTheAirTvShows,
+    popularTvShows,
+    topRatedTvShows,
+    fecthAiringTodayTvShows,
+    fetchOnTheAirTvShows,
+    fetchPopularTvShows,
+    fetchTopRatedTvShows,
+  } = useTvShowStore();
+
   useEffect(() => {
     fetchPopularMovies();
     fetchNowPlayingMovies();
     fetchUpcomingMovies();
     fetchTopRatedMovies();
-  }, [
-    fetchPopularMovies,
-    fetchNowPlayingMovies,
-    fetchTopRatedMovies,
-    fetchUpcomingMovies,
-  ]);
+    fecthAiringTodayTvShows();
+    fetchOnTheAirTvShows();
+    fetchPopularTvShows();
+    fetchTopRatedTvShows();
+  }, []);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
 
   return (
     <div className="movie-lists">
-      <MovieList title="Popular Movies" movies={popularMovies} />
+      <ContentList title="Popular Movies" content={popularMovies} />
 
-      <MovieList title="New Released Movies" movies={nowPlayingMovies} />
+      <ContentList title="New Released Movies" content={nowPlayingMovies} />
 
-      <MovieList title="Top Rated Movies" movies={topRatedMovies} />
+      <ContentList title="Top Rated Movies" content={topRatedMovies} />
 
-      <MovieList title="Upcoming Movies" movies={upcomingMovies} />
+      <ContentList title="Upcoming Movies" content={upcomingMovies} />
+
+      <ContentList title="Airing Today Shows" content={airingTodayTvShows} />
+
+      <ContentList title="On The Air Shows" content={onTheAirTvShows} />
+
+      <ContentList title="Popular Shows" content={popularTvShows} />
+
+      <ContentList title="Top Rated Shows" content={topRatedTvShows} />
     </div>
   );
 };
 
-export default MovieLists;
+export default HomePage;

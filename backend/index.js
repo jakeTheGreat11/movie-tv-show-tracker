@@ -2,6 +2,7 @@ import express from "express";
 import authRoutes from "./routes/authRoute.js";
 import movieRoutes from "./routes/movieRoutes.js";
 import languageRoutes from "./routes/languageRoutes.js";
+import tvShowRoutes from "./routes/tvShowRoutes.js";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
@@ -17,8 +18,8 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
-app.use("/api", movieRoutes);
-// app.use("/api", tvShowRoutes);
+app.use("/api/movies", movieRoutes);
+app.use("/api/tv-shows", tvShowRoutes);
 app.use("/api", languageRoutes);
 
 app.get("/", (req, res) => {

@@ -10,12 +10,11 @@ import {
 
 const router = express.Router();
 
-// Route to get popular movies
-router.get("/movies/popular", getPopularMovies);
-router.get("/movies/now-playing", getNowPlayingMovies);
-router.get("/movies/top-rated", getTopRatedMovies);
-router.get("/movies/upcoming", getUpcomingMovies);
-router.get("/movies/discover", getDiscoverMovies);
-router.get("/movies/genres", getGenres);
+router.get("/popular", getPopularMovies);
+router.get("/now-playing", getNowPlayingMovies);
+router.get("/top-rated", getTopRatedMovies);
+router.get("/upcoming", getUpcomingMovies);
+router.get("/discover", getDiscoverMovies);
+router.get("/genres", getGenres);
 
 export default router;

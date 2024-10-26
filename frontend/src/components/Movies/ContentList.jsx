@@ -1,36 +1,37 @@
 import React, { useState } from "react";
-import "./MovieList.css";
+import "./ContentList.css";
 import MovieCard from "./MovieCard";
+// import "./ContentList.css"; // Rename CSS file accordingly
+// import ContentCard from "./ContentCard"; // Rename MovieCard to ContentCard
 
-const MovieList = ({ movies, title }) => {
+const ContentList = ({ content, title }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Number of movies to show at a time
-  const visibleMovies = 4;
+  // Number of items to show at a time
+  const visibleItems = 4;
 
   // Handle Next Button Click
   const handleNext = () => {
-    if (currentIndex + visibleMovies < movies.length) {
-      setCurrentIndex(currentIndex + visibleMovies);
+    if (currentIndex + visibleItems < content.length) {
+      setCurrentIndex(currentIndex + visibleItems);
     } else {
-      // If remaining movies are less than visibleMovies, show the last set of movies
-      setCurrentIndex(movies.length - visibleMovies);
+      setCurrentIndex(content.length - visibleItems);
     }
   };
 
   // Handle Previous Button Click
   const handlePrev = () => {
-    if (currentIndex - visibleMovies >= 0) {
-      setCurrentIndex(currentIndex - visibleMovies);
+    if (currentIndex - visibleItems >= 0) {
+      setCurrentIndex(currentIndex - visibleItems);
     } else {
-      setCurrentIndex(0); // Go to the first set of movies
+      setCurrentIndex(0);
     }
   };
 
   return (
-    <article className="movie-list-container">
+    <article className="content-list-container">
       <hgroup>
-        <h2 className="movie-list-title">{title}</h2>
+        <h2 className="content-list-title">{title}</h2>
 
         <button
           className="prev-button list-button"
@@ -47,27 +48,27 @@ const MovieList = ({ movies, title }) => {
           >
             <path
               stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               d="m15 19-7-7 7-7"
             />
           </svg>
         </button>
 
-        <div className="movie-list">
-          {movies
-            .slice(currentIndex, currentIndex + visibleMovies)
-            .map((movie) => (
-              <div className="movie-item" key={movie.id}>
-                <MovieCard movie={movie} />
+        <div className="content-list">
+          {content
+            .slice(currentIndex, currentIndex + visibleItems)
+            .map((item) => (
+              <div className="content-item" key={item.id}>
+                <MovieCard movie={item} />
               </div>
             ))}
         </div>
 
         <button
           className="next-button list-button"
-          disabled={currentIndex + visibleMovies >= movies.length}
+          disabled={currentIndex + visibleItems >= content.length}
           onClick={handleNext}
         >
           <svg
@@ -80,9 +81,9 @@ const MovieList = ({ movies, title }) => {
           >
             <path
               stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               d="m9 5 7 7-7 7"
             />
           </svg>
@@ -92,4 +93,4 @@ const MovieList = ({ movies, title }) => {
   );
 };
 
-export default MovieList;
+export default ContentList;
