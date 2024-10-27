@@ -1,29 +1,29 @@
 import React, { useState } from "react";
 import { useDiscoverStore } from "../../store/useDiscoverStore";
 
-const MovieScoreSlider = () => {
-  const { setMinMovieRating, minMovieRating } = useDiscoverStore();
+const MovieScoreSlider = ({ mediaType }) => {
+  const { setMinMediaRating, minMediaRating } = useDiscoverStore();
   const minValue = 0;
   const maxValue = 10;
 
   const handleChange = (e) => {
-    setMinMovieRating(parseInt(e.target.value));
+    setMinMediaRating(parseInt(e.target.value));
   };
 
   return (
     <div className="ticked-range-slider">
-      <label>Minumum Movie score: {minMovieRating}</label>
+      <label>Minumum {mediaType === "movie" ? "Movie" : "TV Show"} score</label>
       <div className="slider-container">
         <input
           type="range"
           min={minValue}
           max={maxValue}
           step="1"
-          value={minMovieRating}
+          value={minMediaRating}
           onChange={handleChange}
           className="slider"
           list="tickmarks"
-          data-tooltip={minMovieRating}
+          data-tooltip={minMediaRating}
           style={{ marginTop: "20px" }}
         />
         <datalist id="tickmarks">

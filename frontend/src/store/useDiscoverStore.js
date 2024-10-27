@@ -4,17 +4,18 @@ import axios from "axios";
 const API_URL = "http://localhost:5000/api";
 
 export const useDiscoverStore = create((set) => ({
-  discoverMovies: [],
+  discoverMedia: [],
   currentPage: 1,
   totalPages: 1,
   selectedLanguage: "",
   languages: [],
   genres: [],
   selectedGenres: [],
-  minMovieRating: 0,
+  minMediaRating: 0,
   selectedSortBy: "",
   selectedYear: "",
-  isMoviesLoading: false,
+  mediaType: "movies",
+  isMediaLoading: false,
   isGenresLoading: false,
   isLanguagesLoading: false,
   error: null,
@@ -29,12 +30,13 @@ export const useDiscoverStore = create((set) => ({
     { value: "title.desc", label: "Title Z-A" },
   ],
 
-  setDiscoverMovies: (movies) => set({ discoverMovies: movies }),
+  setDiscoverMedia: (media) => set({ discoverMedia: media }),
   setCurrentPage: (page) => set({ currentPage: page }),
   setSelectedLanguage: (language) => set({ selectedLanguage: language }),
-  setMinMovieRating: (rating) => set({ minMovieRating: rating }),
+  setMinMediaRating: (rating) => set({ minMediaRating: rating }),
   setSortBy: (sortby) => set({ selectedSortBy: sortby }),
   setSelectedYear: (year) => set({ selectedYear: year }),
+  setMediaType: (type) => set({ mediaType: type }),
   setSelectedGenres: (genre) =>
     set((state) => {
       const isAlreadySelected = state.selectedGenres.includes(genre);
@@ -45,20 +47,21 @@ export const useDiscoverStore = create((set) => ({
       };
     }),
 
-  // Fetching Movies with language rating genre sort_by method and release year filters
-  fetchDiscoverMovies: async (
+  // Fetching Movies with language rating genre sort_by method and release year filters  //fetchDiscoverMovies
+  fetchDiscoverMedia: async (
     page = 1,
     language,
     rating,
     genres,
     sort_by,
-    primary_release_year
+    primary_release_year,
+    mediaType = "movies" // Default to movies, but can be changed to "tv-shows" it doesnt matter
   ) => {
-    set({ isMoviesLoading: true, error: null });
+    set({ isMediaLoading: true, error: null });
     const genre = genres.join(",");
 
     try {
-      const response = await axios.get(`${API_URL}/movies/discover`, {
+      const response = await axios.get(`${API_URL}/${mediaType}/discover`, {
         params: {
           page,
           language,
@@ -68,17 +71,18 @@ export const useDiscoverStore = create((set) => ({
           primary_release_year,
         },
       });
+      console.log("doscover media in fetchDiscoverMedia: ", response.data);
       set((state) => ({
-        discoverMovies:
+        discoverMedia:
           page === 1
-            ? response.data.movies
-            : [...state.discoverMovies, ...response.data.movies], // For loading more movies
-        isMoviesLoading: false,
+            ? response.data[mediaType]
+            : [...state.discoverMedia, ...response.data[mediaType]],
+        isMediaLoading: false,
       }));
     } catch (error) {
       set({
-        error: error || "Error fetching the movies.",
-        isMoviesLoading: false,
+        error: error || `Error fetching the ${mediaType}.`,
+        isMediaLoading: false,
       });
     }
   },
@@ -97,11 +101,11 @@ export const useDiscoverStore = create((set) => ({
     }
   },
 
-  // Fetching Genres
-  fetchMovieGenres: async () => {
+  // Fetching Genres fetchMovieGenres
+  fetchGenres: async (mediaType = "movies") => {
     set({ isGenresLoading: true, error: null });
     try {
-      const response = await axios.get(`${API_URL}/movies/genres`);
+      const response = await axios.get(`${API_URL}/${mediaType}/genres`);
       set({ genres: response.data.genres, isGenresLoading: false });
     } catch (error) {
       set({

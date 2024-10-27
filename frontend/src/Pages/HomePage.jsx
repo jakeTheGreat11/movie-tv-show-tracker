@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { useMovieStore } from "../store/movieStore";
+import { useTvShowStore } from "../store/tvShowStore";
 import ContentList from "../components/Movies/ContentList";
 import "./HomePage.css";
-import { useTvShowStore } from "../store/tvShowStore";
 
 const HomePage = () => {
   const {
@@ -14,8 +14,14 @@ const HomePage = () => {
     fetchNowPlayingMovies,
     fetchUpcomingMovies,
     fetchTopRatedMovies,
-    isLoading,
-    error,
+    isLoadingPopularMovies,
+    isLoadingNowPlayingMovies,
+    isLoadingUpcomingMovies,
+    isLoadingTopRatedMovies,
+    errorPopularMovies,
+    errorNowPlayingMovies,
+    errorUpcomingMovies,
+    errorTopRatedMovies,
   } = useMovieStore();
 
   const {
@@ -27,6 +33,14 @@ const HomePage = () => {
     fetchOnTheAirTvShows,
     fetchPopularTvShows,
     fetchTopRatedTvShows,
+    isLoadingAiringTodayTvShows,
+    isLoadingOnTheAirTvShows,
+    isLoadingPopularTvShows,
+    isLoadingTopRatedTvShows,
+    errorAiringTodayTvShows,
+    errorOnTheAirTvShows,
+    errorPopularTvShows,
+    errorTopRatedTvShows,
   } = useTvShowStore();
 
   useEffect(() => {
@@ -40,26 +54,75 @@ const HomePage = () => {
     fetchTopRatedTvShows();
   }, []);
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
+  const contentLists = [
+    {
+      title: "Popular Movies",
+      content: popularMovies,
+      isLoading: isLoadingPopularMovies,
+      error: errorPopularMovies,
+    },
+    {
+      title: "New Released Movies",
+      content: nowPlayingMovies,
+      isLoading: isLoadingNowPlayingMovies,
+      error: errorNowPlayingMovies,
+    },
+    {
+      title: "Top Rated Movies",
+      content: topRatedMovies,
+      isLoading: isLoadingTopRatedMovies,
+      error: errorTopRatedMovies,
+    },
+    {
+      title: "Upcoming Movies",
+      content: upcomingMovies,
+      isLoading: isLoadingUpcomingMovies,
+      error: errorUpcomingMovies,
+    },
+    {
+      title: "Airing Today Shows",
+      content: airingTodayTvShows,
+      isLoading: isLoadingAiringTodayTvShows,
+      error: errorAiringTodayTvShows,
+    },
+    {
+      title: "On The Air Shows",
+      content: onTheAirTvShows,
+      isLoading: isLoadingOnTheAirTvShows,
+      error: errorOnTheAirTvShows,
+    },
+    {
+      title: "Popular Shows",
+      content: popularTvShows,
+      isLoading: isLoadingPopularTvShows,
+      error: errorPopularTvShows,
+    },
+    {
+      title: "Top Rated Shows",
+      content: topRatedTvShows,
+      isLoading: isLoadingTopRatedTvShows,
+      error: errorTopRatedTvShows,
+    },
+  ];
 
   return (
-    <div className="movie-lists">
-      <ContentList title="Popular Movies" content={popularMovies} />
+    <div className="content-lists">
+      {contentLists.map(({ title, content, isLoading, error }, index) => {
+        if (isLoading)
+          return (
+            <article key={index}>
+              <span aria-busy="true">Loading {title}...</span>
+            </article>
+          );
+        if (error)
+          return (
+            <article key={index}>
+              Error loading {title}: {error}
+            </article>
+          );
 
-      <ContentList title="New Released Movies" content={nowPlayingMovies} />
-
-      <ContentList title="Top Rated Movies" content={topRatedMovies} />
-
-      <ContentList title="Upcoming Movies" content={upcomingMovies} />
-
-      <ContentList title="Airing Today Shows" content={airingTodayTvShows} />
-
-      <ContentList title="On The Air Shows" content={onTheAirTvShows} />
-
-      <ContentList title="Popular Shows" content={popularTvShows} />
-
-      <ContentList title="Top Rated Shows" content={topRatedTvShows} />
+        return <ContentList key={index} title={title} content={content} />;
+      })}
     </div>
   );
 };

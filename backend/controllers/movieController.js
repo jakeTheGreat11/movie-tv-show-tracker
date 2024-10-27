@@ -101,7 +101,7 @@ export const getDiscoverMovies = async (req, res) => {
   }
 };
 
-export const getGenres = async (req, res) => {
+export const getMovieGenres = async (req, res) => {
   try {
     const response = await axios.get(
       `https://api.themoviedb.org/3/genre/movie/list`,

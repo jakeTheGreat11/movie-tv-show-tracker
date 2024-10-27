@@ -5,7 +5,7 @@ import {
   getTopRatedMovies,
   getUpcomingMovies,
   getDiscoverMovies,
-  getGenres,
+  getMovieGenres,
 } from "../controllers/movieController.js";
 
 const router = express.Router();
@@ -15,6 +15,6 @@ router.get("/now-playing", getNowPlayingMovies);
 router.get("/top-rated", getTopRatedMovies);
 router.get("/upcoming", getUpcomingMovies);
 router.get("/discover", getDiscoverMovies);
-router.get("/genres", getGenres);
+router.get("/genres", getMovieGenres);
 
 export default router;

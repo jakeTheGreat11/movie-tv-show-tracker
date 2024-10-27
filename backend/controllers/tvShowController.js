@@ -90,7 +90,7 @@ export const getDiscoverTvShows = async (req, res) => {
   try {
     const response = await axios.get(url, { params });
     const tvShows = response.data.results;
-    res.status(200).json({ success: true, tvShows });
+    res.status(200).json({ success: true, "tv-shows": tvShows });
   } catch (error) {
     console.error("Error fetching discovered TV shows:", error.message);
     res.status(500).json({ success: false, message: "Server error" });

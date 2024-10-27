@@ -10,12 +10,12 @@
   background-color: #f0f0f0; /* Optional */
 }
 
-.movies-content {
+.media-content {
   width: 80%; /* Adjust as needed */
   padding: 20px;
 }
 
-.movies-grid {
+.media-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr); /* 4 movies per row */
   gap: 20px;
