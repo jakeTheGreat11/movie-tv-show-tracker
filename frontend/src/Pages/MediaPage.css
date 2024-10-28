@@ -1,0 +1,15 @@
+.media-page {
+  display: flex;
+  flex-direction: column;
+}
+.media-poster {
+  width: 100%; /* Or a specific width */
+  height: 300px; /* Set a fixed height for the image */
+  background-size: cover; /* Ensure the image covers the area */
+  background-position: center; /* Center the image */
+}
+.media-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

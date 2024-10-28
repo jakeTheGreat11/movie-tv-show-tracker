@@ -6,6 +6,7 @@ import {
   getPopularTvShows,
   getTopRatedTvShows,
   getTvShowGenres,
+  getTvShowDetails,
 } from "../controllers/tvShowController.js";
 
 const router = express.Router();
@@ -16,5 +17,6 @@ router.get("/popular", getPopularTvShows);
 router.get("/top-rated", getTopRatedTvShows);
 router.get("/discover", getDiscoverTvShows);
 router.get("/genres", getTvShowGenres);
+router.get("/:id", getTvShowDetails);
 
 export default router;

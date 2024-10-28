@@ -8,6 +8,7 @@ import HomePage from "./Pages/HomePage";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import DiscoverPageMovies from "./Pages/DiscoverPage";
+import MediaPage from "./Pages/MediaPage";
 
 // redirect authenticated user to home page
 const RedirectAuthenticatedUser = ({ children }) => {
@@ -78,6 +79,7 @@ function App() {
           path="/tv-shows/discover"
           element={<DiscoverPageMovies mediaType={"tv-shows"} />}
         />
+        <Route path="/:mediaType/:id" element={<MediaPage />} />
       </Routes>
       {!isAuthPage && <Footer />}
     </>

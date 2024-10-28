@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import "./ContentList.css";
-import MovieCard from "./MovieCard";
-// import "./ContentList.css"; // Rename CSS file accordingly
-// import ContentCard from "./ContentCard"; // Rename MovieCard to ContentCard
+import "./MediaList.css";
+import MediaCard from "./MediaCard";
 
-const ContentList = ({ content, title }) => {
+const MediaList = ({ content, title }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // Number of items to show at a time
@@ -61,7 +59,7 @@ const ContentList = ({ content, title }) => {
             .slice(currentIndex, currentIndex + visibleItems)
             .map((item) => (
               <div className="content-item" key={item.id}>
-                <MovieCard movie={item} />
+                <MediaCard media={item} />
               </div>
             ))}
         </div>
@@ -93,4 +91,4 @@ const ContentList = ({ content, title }) => {
   );
 };
 
-export default ContentList;
+export default MediaList;

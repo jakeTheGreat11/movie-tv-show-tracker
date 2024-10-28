@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./DiscoverPage.css";
-import MovieCard from "../components/Movies/MovieCard";
+import MediaCard from "../components/Media/MediaCard";
 import { useDiscoverStore } from "../store/useDiscoverStore";
 import MediaFilter from "../components/Filters/MediaFilter";
 
@@ -58,7 +58,7 @@ const DiscoverPage = ({ mediaType }) => {
       <main className="media-content">
         <div className="media-grid">
           {discoverMedia.map((media, index) => (
-            <MovieCard movie={media} /> // got to change to media card
+            <MediaCard media={media} key={index} />
           ))}
         </div>
         <button onClick={loadMoreMedia}>Load More</button>

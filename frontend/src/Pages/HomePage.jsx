@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useMovieStore } from "../store/movieStore";
 import { useTvShowStore } from "../store/tvShowStore";
-import ContentList from "../components/Movies/ContentList";
+import MediaList from "../components/Media/MediaList";
 import "./HomePage.css";
 
 const HomePage = () => {
@@ -121,7 +121,7 @@ const HomePage = () => {
             </article>
           );
 
-        return <ContentList key={index} title={title} content={content} />;
+        return <MediaList key={index} title={title} content={content} />;
       })}
     </div>
   );

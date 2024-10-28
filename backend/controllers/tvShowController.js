@@ -114,3 +114,20 @@ export const getTvShowGenres = async (req, res) => {
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
+
+export const getTvShowDetails = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const response = await axios.get(`https://api.themoviedb.org/3/tv/${id}`, {
+      params: {
+        api_key: apiKey,
+        language: "en-US",
+        // dont forget to add append_to_response
+      },
+    });
+    res.status(200).json({ success: true, media: response.data }); //response.data
+  } catch (error) {
+    console.error("Error fetching TV show details: ", error.message);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
