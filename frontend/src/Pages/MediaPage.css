@@ -4,12 +4,26 @@
 }
 .media-poster {
   width: 100%; /* Or a specific width */
-  height: 300px; /* Set a fixed height for the image */
+  height: 500px; /* Set a fixed height for the image */
   background-size: cover; /* Ensure the image covers the area */
   background-position: center; /* Center the image */
+  border-radius: 20px;
 }
 .media-details {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.status-buttons {
+  margin-left: 0;
+  margin: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+}
+
+.status-buttons > button {
+  margin: 5px;
+  width: 300px;
 }

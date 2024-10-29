@@ -67,7 +67,7 @@ export const getDiscoverTvShows = async (req, res) => {
   const {
     genre,
     sort_by,
-    first_air_date_year,
+    primary_release_year,
     language,
     rating,
     page = 1,
@@ -79,7 +79,7 @@ export const getDiscoverTvShows = async (req, res) => {
     api_key: apiKey,
     sort_by: sort_by || "popularity.desc",
     with_genres: genre || "",
-    first_air_date_year: first_air_date_year || "",
+    first_air_date_year: primary_release_year || "", //i just get the query as primary_release_year and put it into first_air_date_year
     "vote_average.gte": rating || undefined,
     page: page,
   };
@@ -118,14 +118,41 @@ export const getTvShowGenres = async (req, res) => {
 export const getTvShowDetails = async (req, res) => {
   const { id } = req.params;
   try {
-    const response = await axios.get(`https://api.themoviedb.org/3/tv/${id}`, {
-      params: {
-        api_key: apiKey,
-        language: "en-US",
-        // dont forget to add append_to_response
-      },
+    const showResponse = await axios.get(
+      `https://api.themoviedb.org/3/tv/${id}`,
+      {
+        params: {
+          api_key: apiKey,
+          language: "en-US",
+        },
+      }
+    );
+    const media = showResponse.data;
+    const seasons = media.seasons; // Get the seasons from the TV show data
+
+    // Fetch episodes for each season
+    const episodesPromises = seasons.map(async (season) => {
+      const seasonResponse = await axios.get(
+        `https://api.themoviedb.org/3/tv/${id}/season/${season.season_number}`,
+        {
+          params: {
+            api_key: apiKey,
+            language: "en-US",
+          },
+        }
+      );
+      return seasonResponse.data; // Return the season data including episodes
     });
-    res.status(200).json({ success: true, media: response.data }); //response.data
+
+    // Wait for all episode data to be fetched
+    const seasonsWithEpisodes = await Promise.all(episodesPromises);
+
+    // Combine the show data with seasons and episodes
+    const completeData = {
+      ...media,
+      seasons: seasonsWithEpisodes,
+    };
+    res.status(200).json({ success: true, media: completeData });
   } catch (error) {
     console.error("Error fetching TV show details: ", error.message);
     res.status(500).json({ success: false, message: "Server error" });

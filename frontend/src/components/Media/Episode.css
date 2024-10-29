@@ -1,0 +1,30 @@
+.episode {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.episode-thumbnail {
+  width: 60px;
+  height: 60px;
+  margin-right: 1rem;
+  border-radius: 4px;
+}
+
+.episode-info {
+  flex: 1;
+}
+
+.episode-status {
+  font-size: 1.5rem;
+  color: green;
+}
+
+.checkmark {
+  color: green;
+}
+
+.pending {
+  color: grey;
+}
