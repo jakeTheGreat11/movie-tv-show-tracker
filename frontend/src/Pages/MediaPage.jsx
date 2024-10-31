@@ -3,45 +3,42 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import "./MediaPage.css";
 import Season from "../components/Media/Season";
+import WatchStatusDropdown from "../components/common/StatusButtonGroup";
+import { useMediaPageStore } from "../store/mediaPageStore";
+import { useAuthStore } from "../store/authStore";
+import StatusButtonGroup from "../components/common/StatusButtonGroup";
 
 const MediaPage = () => {
-  //later on i will do more stylign and add components like genre components and more
+  //later on i will do more styling and add components for ecery media detail like genre components and more
   const { id, mediaType } = useParams();
-  const [mediaDetails, setMediaDetails] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [status, setStatus] = useState("");
-  const [showAccordion, setShowAccordion] = useState(false);
-
-  const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
-
-  const handleStatusClick = (newStatus) => {
-    setStatus(newStatus); // Update the status
-    setShowAccordion(true); // Show the accordion when status is set
-  };
+  const {
+    mediaDetails,
+    isMediaLoading,
+    fetchDetails,
+    showAccordion,
+    addToWatchlist,
+    watchlistStatus,
+    setWatchlistStatus,
+  } = useMediaPageStore();
+  const { user } = useAuthStore();
 
   useEffect(() => {
     // Fetch media details based on ID
-    const fetchDetails = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get(
-          `${BACKEND_URL}/api/${mediaType}/${id}`
-        );
-        const media = response.data.media;
-        console.log("mediaDetails.seasons: ", media.seasons);
-        setMediaDetails(media);
-      } catch (error) {
-        console.error("Error fetching media details:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchDetails();
+    fetchDetails(id, mediaType);
   }, [id, mediaType]);
 
-  if (loading) {
+  const handleStatusChange = (status) => {
+    const userId = user.id;
+    console.log("status ", status);
+    setWatchlistStatus(status);
+    addToWatchlist(id, mediaType, userId, status);
+  };
+
+  if (!mediaDetails) {
+    return <div>No media details available</div>;
+  }
+
+  if (isMediaLoading) {
     return <div>Loading...</div>;
   }
   const { title, overview, vote_average, release_date, genres, backdrop_path } =
@@ -49,7 +46,7 @@ const MediaPage = () => {
   const backdropUrl = `https://image.tmdb.org/t/p/original${backdrop_path}`;
 
   return (
-    <div class="media-page" aria-busy={loading ? true : false}>
+    <div class="media-page" aria-busy={isMediaLoading ? true : false}>
       <div
         className="media-poster"
         style={{ backgroundImage: `url(${backdropUrl})` }}
@@ -59,31 +56,27 @@ const MediaPage = () => {
         <p>{overview}</p>
         <div class="media-details">
           <span>Average Vote: {vote_average}</span>
-          <span>Release Date: {release_date}</span>{" "}
+          <span>Release Date: {release_date}</span>
           {/*fix realse date so that it shows also for tv (airing i think) */}
           <span>Genres: {genres.map((genre) => genre.name).join(", ")}</span>
         </div>
       </div>
       <div className="status-buttons">
-        <button onClick={() => handleStatusClick("watched")}>
-          Add To Watched
-        </button>
-        {mediaType === "tv-shows" ? (
-          <button onClick={() => handleStatusClick("watching")}>
-            Add To Watching
-          </button>
-        ) : null}
-        <button onClick={() => handleStatusClick("plan-to-watch")}>
-          Add To Plan to Watch
-        </button>
+        <StatusButtonGroup
+          mediaType={mediaType}
+          currentStatus={watchlistStatus}
+          onStatusChange={handleStatusChange}
+        />
       </div>
-      {showAccordion && (
-        <div className="media-page">
-          {mediaDetails.seasons.map((season, index) => (
-            <Season key={index} season={season} />
-          ))}
-        </div>
-      )}
+      {showAccordion &&
+        mediaDetails.seasons &&
+        mediaDetails.seasons.length > 0 && (
+          <div className="media-page">
+            {mediaDetails.seasons.map((season, index) => (
+              <Season key={index} season={season} />
+            ))}
+          </div>
+        )}
     </div>
   );
 };
