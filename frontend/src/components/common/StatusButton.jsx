@@ -6,7 +6,7 @@ const StatusButton = ({ status, currentStatus, onClick }) => {
       className={isActive ? "active" : ""}
       onClick={() => onClick(status)}
     >
-      {status}
+      {isActive ? `remove from ${status}` : status}
     </button>
   );
 };

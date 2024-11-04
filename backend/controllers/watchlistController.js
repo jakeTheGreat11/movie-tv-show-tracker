@@ -13,23 +13,33 @@ export const handleWatchlistStatus = async (req, res) => {
     const mediaDetails = await fetchMediaDetails(mediaId, mediaType);
 
     const existingItem = await findWatchlistItem(userId, mediaId);
+    console.log("status: ", status);
 
     if (existingItem) {
+      console.log("existingItem.status: ", existingItem.status);
       if (existingItem.status === status) {
         //if it exist remove it from watchlist
-        const removedItem = await removeFromWatchlist(userId, mediaId);
+        console.log("in remove to watchlist if statment");
+        const removedItem = await removeFromWatchlist(
+          userId,
+          mediaId,
+          mediaType
+        );
         return res.json({ message: "Removed from watchlist", removedItem });
       } else {
         // Otherwise, update the status
+        console.log("in update to watchlist if statment");
         const updatedItem = await updateWatchlistStatus(
           userId,
           mediaId,
+          mediaType,
           status
         );
         return res.json({ message: "Watchlist status updated", updatedItem });
       }
     } else {
       // If not in the watchlist, add it
+      console.log("in add to watchlist if statment");
       const newItem = await addToWatchlist(
         userId,
         mediaId,

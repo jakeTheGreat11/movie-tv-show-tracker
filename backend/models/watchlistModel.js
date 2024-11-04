@@ -7,18 +7,26 @@ const checkAndInsertMedia = async (mediaId, mediaType, mediaDetails) => {
     mediaId,
   ]);
   if (!existingMedia.rows.length) {
+    const { overview, vote_average, poster_path, id } = mediaDetails;
+
+    const title =
+      mediaType === "tv-shows" ? mediaDetails.name : mediaDetails.title;
+    const release_date =
+      mediaType === "tv-shows" ? null : mediaDetails.release_date;
+    const first_air_date =
+      mediaType === "tv-shows" ? mediaDetails.first_air_date : null;
     await db.query(
       `INSERT INTO media (id, title, description, release_date, first_air_date, rating, poster_url, tmdb_id, media_type)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
       [
         mediaId,
-        mediaDetails.title,
-        mediaDetails.description,
-        mediaDetails.release_date,
-        mediaDetails.first_air_date,
-        mediaDetails.rating,
-        mediaDetails.poster_url,
-        mediaDetails.tmdb_id,
+        title,
+        overview,
+        release_date,
+        first_air_date,
+        vote_average,
+        poster_path,
+        id,
         mediaType,
       ]
     );

@@ -3,11 +3,41 @@ import { useMediaPageStore } from "../../store/mediaPageStore";
 import "./StatusButtonGroup.css";
 import StatusButton from "./StatusButton";
 
-// const { fetchWatchlistStatus, setWatchlistStatus } = useMediaPageStore();
-const StatusButtonGroup = ({ mediaType, currentStatus, onStatusChange }) => {
+const StatusButtonGroup = ({ mediaId, mediaType, userId }) => {
+  //currentStatus, onStatusChange
+  const {
+    watchlistStatus,
+    addToWatchlist,
+    fetchWatchlistStatus,
+    setWatchlistStatus,
+  } = useMediaPageStore();
+
+  useEffect(() => {
+    if (userId) {
+      fetchWatchlistStatus(userId, mediaId);
+    }
+  }, [mediaId, userId]);
+
+  const handleStatusChange = async (status) => {
+    const responseMessage = await addToWatchlist(
+      mediaId,
+      mediaType,
+      userId,
+      status
+    );
+
+    if (responseMessage === "Removed from watchlist") {
+      setWatchlistStatus("");
+    } else if (
+      responseMessage === "Watchlist status updated" ||
+      responseMessage === "Added to watchlist"
+    ) {
+      setWatchlistStatus(status);
+    }
+  };
+
   const statuses = ["watched", "plan-to-watch"];
   if (mediaType === "tv-shows") {
-    console.log("media type: ", mediaType);
     statuses.push("watching");
   }
 
@@ -17,8 +47,8 @@ const StatusButtonGroup = ({ mediaType, currentStatus, onStatusChange }) => {
         <StatusButton
           key={status}
           status={status}
-          currentStatus={currentStatus}
-          onClick={onStatusChange}
+          currentStatus={watchlistStatus}
+          onClick={() => handleStatusChange(status)}
         />
       ))}
     </div>

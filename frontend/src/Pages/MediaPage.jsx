@@ -11,6 +11,7 @@ import StatusButtonGroup from "../components/common/StatusButtonGroup";
 const MediaPage = () => {
   //later on i will do more styling and add components for ecery media detail like genre components and more
   const { id, mediaType } = useParams();
+  const mediaId = id;
   const {
     mediaDetails,
     isMediaLoading,
@@ -19,20 +20,27 @@ const MediaPage = () => {
     addToWatchlist,
     watchlistStatus,
     setWatchlistStatus,
+    fetchWatchlistStatus,
   } = useMediaPageStore();
   const { user } = useAuthStore();
+  const userId = user ? user.id : null;
 
   useEffect(() => {
     // Fetch media details based on ID
-    fetchDetails(id, mediaType);
-  }, [id, mediaType]);
+    fetchDetails(mediaId, mediaType);
+    // if (userId) {
+    //   fetchWatchlistStatus(userId, mediaId);
+    // }
+  }, [mediaId, mediaType, userId]);
 
-  const handleStatusChange = (status) => {
-    const userId = user.id;
-    console.log("status ", status);
-    setWatchlistStatus(status);
-    addToWatchlist(id, mediaType, userId, status);
-  };
+  // const handleStatusChange = (status) => {
+  //   console.log("status ", status);
+  //   if (watchlistStatus === status) {
+  //     setWatchlistStatus("");
+  //   }
+  //   setWatchlistStatus(status);
+  //   addToWatchlist(mediaId, mediaType, userId, status);
+  // };
 
   if (!mediaDetails) {
     return <div>No media details available</div>;
@@ -54,6 +62,7 @@ const MediaPage = () => {
       <div class="media-info">
         <h2>{title}</h2>
         <p>{overview}</p>
+
         <div class="media-details">
           <span>Average Vote: {vote_average}</span>
           <span>Release Date: {release_date}</span>
@@ -61,13 +70,17 @@ const MediaPage = () => {
           <span>Genres: {genres.map((genre) => genre.name).join(", ")}</span>
         </div>
       </div>
+
       <div className="status-buttons">
         <StatusButtonGroup
+          mediaId={mediaId}
           mediaType={mediaType}
-          currentStatus={watchlistStatus}
-          onStatusChange={handleStatusChange}
+          // currentStatus={watchlistStatus}
+          userId={userId}
+          // onStatusChange={handleStatusChange}
         />
       </div>
+
       {showAccordion &&
         mediaDetails.seasons &&
         mediaDetails.seasons.length > 0 && (
