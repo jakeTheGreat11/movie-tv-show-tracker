@@ -9,14 +9,12 @@ export const useMediaPageStore = create((set) => ({
   isAddToWatchlistLoading: false,
   error: null,
   watchlistStatus: "", // Store the current status: "watched", "watching", "plan-to-watch"
-  showAccordion: true,
   watchlistAddSuccess: false,
   displayMessage: "",
   setMediaDetails: (details) => set({ mediaDetails: details }),
   setisMediaLoading: (isLoading) => set({ isMediaLoading: isLoading }),
   setError: (error) => set({ error }),
   setWatchlistStatus: (newStatus) => set({ watchlistStatus: newStatus }),
-  toggleAccordion: (show) => set({ showAccordion: show }),
 
   fetchDetails: async (id, mediaType) => {
     set({ isMediaLoading: true });

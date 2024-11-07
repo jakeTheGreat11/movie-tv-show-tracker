@@ -18,6 +18,7 @@ const StatusButtonGroup = ({ mediaId, mediaType, userId }) => {
     }
   }, [mediaId, userId]);
 
+  console.log(watchlistStatus);
   const handleStatusChange = async (status) => {
     const responseMessage = await addToWatchlist(
       mediaId,

@@ -12,49 +12,37 @@ const MediaPage = () => {
   //later on i will do more styling and add components for ecery media detail like genre components and more
   const { id, mediaType } = useParams();
   const mediaId = id;
-  const {
-    mediaDetails,
-    isMediaLoading,
-    fetchDetails,
-    showAccordion,
-    addToWatchlist,
-    watchlistStatus,
-    setWatchlistStatus,
-    fetchWatchlistStatus,
-  } = useMediaPageStore();
+  const { mediaDetails, fetchDetails, watchlistStatus } = useMediaPageStore();
   const { user } = useAuthStore();
   const userId = user ? user.id : null;
 
   useEffect(() => {
     // Fetch media details based on ID
     fetchDetails(mediaId, mediaType);
-    // if (userId) {
-    //   fetchWatchlistStatus(userId, mediaId);
-    // }
   }, [mediaId, mediaType, userId]);
 
-  // const handleStatusChange = (status) => {
-  //   console.log("status ", status);
-  //   if (watchlistStatus === status) {
-  //     setWatchlistStatus("");
-  //   }
-  //   setWatchlistStatus(status);
-  //   addToWatchlist(mediaId, mediaType, userId, status);
-  // };
-
+  // make loading div when waiting for media
   if (!mediaDetails) {
-    return <div>No media details available</div>;
+    return (
+      <article
+        aria-busy="true"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "50vh",
+        }}
+      ></article>
+    );
   }
-
-  if (isMediaLoading) {
-    return <div>Loading...</div>;
-  }
+  // destructure media for easier use
   const { title, overview, vote_average, release_date, genres, backdrop_path } =
     mediaDetails;
+  console.log("🚀 ~ MediaPage ~ mediaDetails:", mediaDetails);
   const backdropUrl = `https://image.tmdb.org/t/p/original${backdrop_path}`;
 
   return (
-    <div class="media-page" aria-busy={isMediaLoading ? true : false}>
+    <div class="media-page">
       <div
         className="media-poster"
         style={{ backgroundImage: `url(${backdropUrl})` }}
@@ -75,13 +63,12 @@ const MediaPage = () => {
         <StatusButtonGroup
           mediaId={mediaId}
           mediaType={mediaType}
-          // currentStatus={watchlistStatus}
           userId={userId}
-          // onStatusChange={handleStatusChange}
         />
       </div>
 
-      {showAccordion &&
+      {/* display when tv show is in watchlist */}
+      {watchlistStatus !== "" &&
         mediaDetails.seasons &&
         mediaDetails.seasons.length > 0 && (
           <div className="media-page">

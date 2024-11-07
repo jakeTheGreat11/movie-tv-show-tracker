@@ -1,4 +1,6 @@
 import React from "react";
+import "./Episode.css";
+import CheckBox from "../common/CheckBox";
 
 const Episode = ({ episode }) => {
   return (
@@ -13,6 +15,7 @@ const Episode = ({ episode }) => {
         <p>{episode.name}</p>
       </div>
       <div className="episode-status"></div>
+      <CheckBox />
     </div>
   );
 };
