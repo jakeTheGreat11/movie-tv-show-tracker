@@ -15,7 +15,7 @@ const Season = ({ season }) => {
           <h3>{season.name}</h3>
           <span onClick={toggleExpand}>{isExpanded ? "▲" : "▼"}</span>
         </div>
-        <CheckBox />
+        <CheckBox isSeason={true} seasonNumber={season.name} />
       </div>
       {isExpanded && (
         <div className="episode-list" style={{ transition: "ease-in-out" }}>

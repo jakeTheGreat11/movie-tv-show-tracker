@@ -15,7 +15,7 @@ const Episode = ({ episode }) => {
         <p>{episode.name}</p>
       </div>
       <div className="episode-status"></div>
-      <CheckBox />
+      <CheckBox isSeason={false} />
     </div>
   );
 };

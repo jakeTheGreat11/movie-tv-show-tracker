@@ -7,7 +7,7 @@ const StatusButtonGroup = ({ mediaId, mediaType, userId }) => {
   //currentStatus, onStatusChange
   const {
     watchlistStatus,
-    addToWatchlist,
+    addMediaToWatchlist,
     fetchWatchlistStatus,
     setWatchlistStatus,
   } = useMediaPageStore();
@@ -20,7 +20,7 @@ const StatusButtonGroup = ({ mediaId, mediaType, userId }) => {
 
   console.log(watchlistStatus);
   const handleStatusChange = async (status) => {
-    const responseMessage = await addToWatchlist(
+    const responseMessage = await addMediaToWatchlist(
       mediaId,
       mediaType,
       userId,

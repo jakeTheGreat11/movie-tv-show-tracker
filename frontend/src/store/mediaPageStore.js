@@ -11,11 +11,15 @@ export const useMediaPageStore = create((set) => ({
   watchlistStatus: "", // Store the current status: "watched", "watching", "plan-to-watch"
   watchlistAddSuccess: false,
   displayMessage: "",
+  watchedEpisodes: [],
+  watchedSeasons: [],
+
   setMediaDetails: (details) => set({ mediaDetails: details }),
   setisMediaLoading: (isLoading) => set({ isMediaLoading: isLoading }),
   setError: (error) => set({ error }),
   setWatchlistStatus: (newStatus) => set({ watchlistStatus: newStatus }),
 
+  //fetches the details of the media that has been clicked on
   fetchDetails: async (id, mediaType) => {
     set({ isMediaLoading: true });
     try {
@@ -30,7 +34,8 @@ export const useMediaPageStore = create((set) => ({
     }
   },
 
-  addToWatchlist: async (mediaId, mediaType, userId, status) => {
+  //adds and updates media to watchlist of the user
+  addMediaToWatchlist: async (mediaId, mediaType, userId, status) => {
     set({ isAddToWatchlistLoading: true });
     console.log("status: ", status);
     try {
@@ -54,6 +59,8 @@ export const useMediaPageStore = create((set) => ({
       set({ watchlistAddSuccess: false });
     }
   },
+
+  //fetches the watchlist status to display it on the watch status buttons
   fetchWatchlistStatus: async (userId, mediaId) => {
     try {
       const response = await axios.get(`${API_URL}/watchlist/status`, {
@@ -62,6 +69,52 @@ export const useMediaPageStore = create((set) => ({
       set({ watchlistStatus: response.data.status });
     } catch (error) {
       console.error("Error fetching watchlist status:", error);
+    }
+  },
+
+  fetchWatchedSeasonsAndEpisodes: async (userId, mediaId) => {
+    try {
+      //see how to destructure with response.data
+      const { episodes, seasons } = await axios.get(
+        `${API_URL}/watchlist/watched`,
+        {
+          params: { userId, mediaId },
+        }
+      );
+      set({ watchedEpisodes: episodes, watchedSeasons: seasons });
+    } catch (error) {
+      console.error("Error fetching watched seasons and episodes: ", error);
+    }
+  },
+
+  addSeasonToWatchlist: async (userId, mediaId, seasonId, watched) => {
+    const isSeason = true;
+    try {
+      const response = await axios.post(
+        `${API_URL}/watchlist/update-watch-progress`,
+        { params: { userId, mediaId, seasonId, watched, isSeason } }
+      );
+      set({ displayMessage: response.data.message });
+    } catch (error) {
+      console.error(
+        "Error adding watched seasons to watchlist: ",
+        response.data.error
+      );
+    }
+  },
+  addEpisodeToWatchlist: async (userId, mediaId, episodeId, watched) => {
+    const isSeason = false;
+    try {
+      const response = await axios.post(
+        `${API_URL}/watchlist/update-watch-progress`,
+        { params: { userId, mediaId, episodeId, watched, isSeason } }
+      );
+      set({ displayMessage: response.data.message });
+    } catch (error) {
+      console.error(
+        "Error adding watched seasons to watchlist: ",
+        response.data.error
+      );
     }
   },
 }));

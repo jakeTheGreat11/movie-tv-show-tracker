@@ -1,13 +1,21 @@
 import React from "react";
 import { useState } from "react";
 import "./Checkbox.css";
+import { useMediaPageStore } from "../../store/mediaPageStore";
 
 // later on ill probably pass isWatched prop
-const CheckBox = () => {
+const CheckBox = ({ isSeason }) => {
   const [isChecked, setIsChecked] = useState(false);
+  const { addSeasonToWatchlist, addEpisodeToWatchlist } = useMediaPageStore();
+  const { user } = useAuthStore();
+  const userId = user ? user.id : null;
 
+  userId, mediaId, episodeId, watched;
   const handleClick = () => {
-    setIsChecked(!isChecked);
+    // setIsChecked(!isChecked);
+    if (isSeason) {
+      addSeasonToWatchlist(userId);
+    }
   };
 
   return (
