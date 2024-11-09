@@ -1,24 +1,34 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import "./MediaPage.css";
-import Season from "../components/Media/Season";
 import { useMediaPageStore } from "../store/mediaPageStore";
 import { useAuthStore } from "../store/authStore";
 import StatusButtonGroup from "../components/common/StatusButtonGroup";
+import SeasonList from "../components/Media/SeasonList";
 
 const MediaPage = () => {
   //later on i will do more styling and add components for every media detail like genre components and more
   const { id, mediaType } = useParams();
   const mediaId = id;
-  const { mediaDetails, fetchDetails, watchlistStatus } = useMediaPageStore();
+  const {
+    mediaDetails,
+    fetchDetails,
+    watchlistStatus,
+    fetchWatchedSeasonsAndEpisodes,
+  } = useMediaPageStore();
   const { user } = useAuthStore();
   const userId = user ? user.id : null;
 
   useEffect(() => {
     // Fetch media details based on ID
-    fetchDetails(mediaId, mediaType);
-  }, [mediaId, mediaType, userId]);
+    if (userId) {
+      // Fetch media details based on ID
+      fetchDetails(mediaId, mediaType);
+
+      // Fetch watched seasons and episode
+      fetchWatchedSeasonsAndEpisodes(userId, mediaId);
+    }
+  }, [mediaId, mediaType, userId, fetchWatchedSeasonsAndEpisodes]);
 
   // make loading div when waiting for media
   if (!mediaDetails) {
@@ -67,15 +77,13 @@ const MediaPage = () => {
       </div>
 
       {/* display when tv show is in watchlist */}
-      {watchlistStatus !== "" &&
-        mediaDetails.seasons &&
-        mediaDetails.seasons.length > 0 && (
-          <div className="media-page">
-            {mediaDetails.seasons.map((season, index) => (
-              <Season key={index} season={season} />
-            ))}
-          </div>
-        )}
+      <div className="media-page">
+        {watchlistStatus !== "" &&
+          mediaDetails.seasons &&
+          mediaDetails.seasons.length > 0 && (
+            <SeasonList mediaId={mediaId} seasons={mediaDetails.seasons} />
+          )}
+      </div>
     </div>
   );
 };

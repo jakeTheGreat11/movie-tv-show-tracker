@@ -1,12 +1,30 @@
 import React, { useState } from "react";
-import Episode from "./Episode";
 import "./Season.css";
 import CheckBox from "../common/CheckBox";
+import EpisodeList from "./EpisodeList";
+import { useMediaPageStore } from "../../store/mediaPageStore";
+import { useAuthStore } from "../../store/authStore";
 
-const Season = ({ season }) => {
+const Season = ({ mediaId, season }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const { addSeasonToWatchlist, watchedSeasons } = useMediaPageStore();
+  const { user } = useAuthStore();
+  const userId = user?.id;
 
   const toggleExpand = () => setIsExpanded(!isExpanded);
+
+  const isChecked = watchedSeasons?.some(
+    (watched) => watched.season_id === season.id
+  );
+
+  const handleSeasonWatchToggle = (watched) => {
+    console.log("pressed on season.");
+    console.log("watched: ", watched);
+    console.log("userId: ", userId);
+    console.log("mediaId: ", mediaId);
+    console.log("season.id: ", season.id);
+    addSeasonToWatchlist(userId, mediaId, season.id, watched);
+  };
 
   return (
     <article className="season">
@@ -15,14 +33,10 @@ const Season = ({ season }) => {
           <h3>{season.name}</h3>
           <span onClick={toggleExpand}>{isExpanded ? "▲" : "▼"}</span>
         </div>
-        <CheckBox isSeason={true} seasonNumber={season.name} />
+        <CheckBox isChecked={isChecked} onChange={handleSeasonWatchToggle} />
       </div>
       {isExpanded && (
-        <div className="episode-list" style={{ transition: "ease-in-out" }}>
-          {season.episodes.map((episode, index) => (
-            <Episode key={index} episode={episode} />
-          ))}
-        </div>
+        <EpisodeList mediaId={mediaId} episodes={season.episodes} />
       )}
     </article>
   );

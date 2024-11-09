@@ -1,8 +1,31 @@
 import React from "react";
 import "./Episode.css";
 import CheckBox from "../common/CheckBox";
+import { useMediaPageStore } from "../../store/mediaPageStore";
+import { useAuthStore } from "../../store/authStore";
+import { useEffect } from "react";
 
-const Episode = ({ episode }) => {
+const Episode = ({ mediaId, episode }) => {
+  const { watchedEpisodes, addEpisodeToWatchlist } = useMediaPageStore();
+
+  const { user } = useAuthStore();
+  const userId = user?.id;
+
+  const isChecked = watchedEpisodes?.some(
+    (watched) => watched.episode_id === episode.id
+  );
+
+  const handleEpisodeWatchToggle = (watched) => {
+    console.log("pressed on episode.");
+    console.log("watched: ", watched);
+    console.log("userId: ", userId);
+    console.log("mediaId: ", mediaId);
+    console.log("episode.id: ", episode.id);
+    addEpisodeToWatchlist(userId, mediaId, episode.id, !watched);
+  };
+
+  useEffect(() => {}, [watchedEpisodes]);
+
   return (
     <div className="episode">
       <img
@@ -15,7 +38,7 @@ const Episode = ({ episode }) => {
         <p>{episode.name}</p>
       </div>
       <div className="episode-status"></div>
-      <CheckBox isSeason={false} />
+      <CheckBox isChecked={isChecked} onChange={handleEpisodeWatchToggle} />
     </div>
   );
 };

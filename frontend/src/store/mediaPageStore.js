@@ -74,13 +74,14 @@ export const useMediaPageStore = create((set) => ({
 
   fetchWatchedSeasonsAndEpisodes: async (userId, mediaId) => {
     try {
-      //see how to destructure with response.data
-      const { episodes, seasons } = await axios.get(
-        `${API_URL}/watchlist/watched`,
-        {
-          params: { userId, mediaId },
-        }
-      );
+      const response = await axios.get(`${API_URL}/watchlist/watched`, {
+        params: { userId, mediaId },
+      });
+
+      const { episodes, seasons } = response.data;
+
+      console.log("episodes: ", episodes);
+      console.log("seasons: ", seasons);
       set({ watchedEpisodes: episodes, watchedSeasons: seasons });
     } catch (error) {
       console.error("Error fetching watched seasons and episodes: ", error);
@@ -92,7 +93,7 @@ export const useMediaPageStore = create((set) => ({
     try {
       const response = await axios.post(
         `${API_URL}/watchlist/update-watch-progress`,
-        { params: { userId, mediaId, seasonId, watched, isSeason } }
+        { userId, mediaId, seasonId, watched, isSeason }
       );
       set({ displayMessage: response.data.message });
     } catch (error) {
@@ -107,7 +108,7 @@ export const useMediaPageStore = create((set) => ({
     try {
       const response = await axios.post(
         `${API_URL}/watchlist/update-watch-progress`,
-        { params: { userId, mediaId, episodeId, watched, isSeason } }
+        { userId, mediaId, episodeId, watched, isSeason }
       );
       set({ displayMessage: response.data.message });
     } catch (error) {
