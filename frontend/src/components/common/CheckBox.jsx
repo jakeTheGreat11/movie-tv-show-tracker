@@ -5,7 +5,7 @@ const CheckBox = ({ isChecked, onChange }) => {
   return (
     <div className="checkbox-wrapper-31">
       <input
-        defaultChecked={isChecked}
+        checked={isChecked}
         type="checkbox"
         onChange={() => onChange(isChecked)}
       />

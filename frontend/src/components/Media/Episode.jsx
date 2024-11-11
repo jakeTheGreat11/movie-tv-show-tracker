@@ -21,7 +21,8 @@ const Episode = ({ mediaId, episode }) => {
     console.log("userId: ", userId);
     console.log("mediaId: ", mediaId);
     console.log("episode.id: ", episode.id);
-    addEpisodeToWatchlist(userId, mediaId, episode.id, !watched);
+    const newWatched = !watched;
+    addEpisodeToWatchlist(userId, mediaId, episode.id, newWatched);
   };
 
   useEffect(() => {}, [watchedEpisodes]);
