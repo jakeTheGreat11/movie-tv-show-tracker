@@ -1,5 +1,6 @@
 import React from "react";
 import "./Header.css";
+import Avatar from "../common/Avatar";
 
 const Header = () => {
   return (
@@ -26,10 +27,7 @@ const Header = () => {
             <a href="/tv-shows/discover">TV Shows</a>
           </li>
           <li>
-            <a href="#">About</a>
-          </li>
-          <li>
-            <a href="#">Services</a>
+            <Avatar imageUrl={"https://picsum.photos/50"} />
           </li>
         </ul>
       </nav>

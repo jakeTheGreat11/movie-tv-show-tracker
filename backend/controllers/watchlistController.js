@@ -151,3 +151,5 @@ export const updateWatchProgress = async (req, res) => {
     return res.status(500).json({ error: "Internal server error" });
   }
 };
+
+export const getAllWatchlistItems = async (req, res) => {};

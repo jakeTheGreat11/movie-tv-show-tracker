@@ -9,6 +9,7 @@ import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
 import DiscoverPageMovies from "./Pages/DiscoverPage";
 import MediaPage from "./Pages/MediaPage";
+import ProfilePage from "./Pages/ProfilePage";
 
 // redirect authenticated user to home page
 const RedirectAuthenticatedUser = ({ children }) => {
@@ -23,7 +24,11 @@ const RedirectAuthenticatedUser = ({ children }) => {
 
 // protect routes that require authentication
 const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, isCheckingAuth } = useAuthStore();
+
+  if (isCheckingAuth) {
+    return <article aria-busy="true"></article>; // Show a loading spinner while checking auth status
+  }
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
@@ -45,43 +50,56 @@ function App() {
 
   return (
     <>
-      {!isAuthPage && <Header />}
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <HomePage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/register"
-          element={
-            <RedirectAuthenticatedUser>
-              <Register />
-            </RedirectAuthenticatedUser>
-          }
-        />
-        <Route
-          path="/login"
-          element={
-            <RedirectAuthenticatedUser>
-              <Login />
-            </RedirectAuthenticatedUser>
-          }
-        />
-        <Route
-          path="/movies/discover"
-          element={<DiscoverPageMovies mediaType={"movies"} />}
-        />
-        <Route
-          path="/tv-shows/discover"
-          element={<DiscoverPageMovies mediaType={"tv-shows"} />}
-        />
-        <Route path="/:mediaType/:id" element={<MediaPage />} />
-      </Routes>
-      {!isAuthPage && <Footer />}
+      <div className="app-container">
+        {!isAuthPage && <Header />}
+        <main className="main-content">
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <HomePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/register"
+              element={
+                <RedirectAuthenticatedUser>
+                  <Register />
+                </RedirectAuthenticatedUser>
+              }
+            />
+            <Route
+              path="/login"
+              element={
+                <RedirectAuthenticatedUser>
+                  <Login />
+                </RedirectAuthenticatedUser>
+              }
+            />
+            <Route
+              path="/movies/discover"
+              element={<DiscoverPageMovies mediaType={"movies"} />}
+            />
+            <Route
+              path="/tv-shows/discover"
+              element={<DiscoverPageMovies mediaType={"tv-shows"} />}
+            />
+            <Route path="/:mediaType/:id" element={<MediaPage />} />
+
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <ProfilePage />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </main>
+        {!isAuthPage && <Footer />}
+      </div>
     </>
   );
 }

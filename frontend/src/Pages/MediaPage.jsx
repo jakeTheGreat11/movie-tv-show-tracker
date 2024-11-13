@@ -18,6 +18,7 @@ const MediaPage = () => {
   } = useMediaPageStore();
   const { user } = useAuthStore();
   const userId = user ? user.id : null;
+  console.log("user: ", user);
 
   useEffect(() => {
     // Fetch media details based on ID
