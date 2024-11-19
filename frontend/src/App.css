@@ -38,13 +38,17 @@ button {
 
 button:hover {
   background-color: var(--secondary-green) !important;
-  border-color: var(--accent-green) !important;
+  border-color: var(--secondary-green) !important;
 }
 
-button:focus,
+/* button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color !important;
+} */
+button:focus {
+  outline: none;
 }
+
 input {
   background-color: var(--secondary-green);
   border-color: var(--accent-green);

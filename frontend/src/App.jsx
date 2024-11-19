@@ -10,6 +10,7 @@ import Footer from "./components/layout/Footer";
 import DiscoverPageMovies from "./Pages/DiscoverPage";
 import MediaPage from "./Pages/MediaPage";
 import ProfilePage from "./Pages/ProfilePage";
+import WatchlistPage from "./Pages/WatchlistPage";
 
 // redirect authenticated user to home page
 const RedirectAuthenticatedUser = ({ children }) => {
@@ -96,6 +97,15 @@ function App() {
                 </ProtectedRoute>
               }
             />
+
+            <Route
+              path="/user/watchlist"
+              element={
+                <ProtectedRoute>
+                  <WatchlistPage />
+                </ProtectedRoute>
+              }
+            ></Route>
           </Routes>
         </main>
         {!isAuthPage && <Footer />}

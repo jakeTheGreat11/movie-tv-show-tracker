@@ -2,11 +2,19 @@ import React from "react";
 import "./MediaCard.css";
 import { Link } from "react-router-dom";
 
-const MediaCard = ({ media }) => {
+const MediaCard = ({ media, media_type }) => {
   // console.log(media.vote_average);
 
-  const mediaType = media.name ? "tv-shows" : "movies"; //this effects the url in media page
-  const title = mediaType === "tv-shows" ? media.name : media.title;
+  let mediaType = "";
+
+  //differnt naming convention in the db so i just added this
+  if (!media_type) {
+    mediaType = media.name ? "tv-shows" : "movies"; //this effects the url in media page
+  } else {
+    mediaType = media_type;
+  }
+  const title = media.name || media.title;
+
   return (
     <main className="wrapper">
       <Link to={`/${mediaType}/${media.id}`}>

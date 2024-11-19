@@ -1,0 +1,22 @@
+.filter-button-group {
+  display: flex;
+  gap: 12px;
+}
+
+.filter-button {
+  background-color: var(--primary-green) !important;
+  color: var(--button-text-color);
+  border: 2px solid var(--border-color);
+}
+
+.filter-button.active {
+  background-color: var(--accent-green) !important;
+  color: var(--button-text-color);
+}
+
+.filter-button:hover {
+  background-color: var(--hover-bg-color);
+}
+.filter-button:focus {
+  outline: 2px solid var(--accent-green) !important; /* Change this to any color or style you prefer */
+}

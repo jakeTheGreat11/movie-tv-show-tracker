@@ -152,4 +152,45 @@ export const updateWatchProgress = async (req, res) => {
   }
 };
 
-export const getAllWatchlistItems = async (req, res) => {};
+export const getAllWatchlistItems = async (req, res) => {
+  const userId = req.query.userId;
+
+  try {
+    //Query the watchlist table to get media IDs and types
+    const watchlistQuery = `
+      SELECT media_id, status, media_type
+      FROM watchlist
+      WHERE user_id = $1;
+    `;
+    const watchlistResponse = await db.query(watchlistQuery, [userId]);
+    const watchlistItems = watchlistResponse.rows;
+
+    if (watchlistItems.length === 0) {
+      return res.status(200).json({ watchlistList: [] }); // No items
+    }
+
+    //Extract all media IDs
+    const mediaIds = watchlistItems.map((item) => item.media_id);
+
+    //Query the media table for all details using the collected media IDs
+    const mediaQuery = `
+      SELECT *
+      FROM media
+      WHERE id = ANY($1);
+    `;
+    const mediaResponse = await db.query(mediaQuery, [mediaIds]);
+    const mediaDetails = mediaResponse.rows;
+
+    //Combine watchlist data with media details
+    const combinedResults = watchlistItems.map((item) => ({
+      ...item,
+      media: mediaDetails.find((media) => media.id === item.media_id),
+    }));
+
+    //Send the combined results
+    res.status(200).json({ watchlistList: combinedResults });
+  } catch (error) {
+    console.error("Error fetching watchlist items:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
