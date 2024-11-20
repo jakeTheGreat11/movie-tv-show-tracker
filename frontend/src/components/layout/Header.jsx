@@ -1,6 +1,7 @@
 import React from "react";
 import "./Header.css";
 import Avatar from "../common/Avatar";
+import logo from "../../assets/images/logo.png";
 
 const Header = () => {
   return (
@@ -9,7 +10,13 @@ const Header = () => {
         <ul>
           <li>
             <strong>
-              <a href="/">jake tracker</a>
+              <a href="/">
+                <img
+                  src={logo}
+                  alt="Logo"
+                  style={{ width: "300px", height: "auto" }}
+                />
+              </a>
             </strong>
           </li>
         </ul>

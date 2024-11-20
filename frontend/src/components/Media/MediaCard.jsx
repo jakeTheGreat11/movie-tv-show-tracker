@@ -5,14 +5,9 @@ import { Link } from "react-router-dom";
 const MediaCard = ({ media, media_type }) => {
   // console.log(media.vote_average);
 
-  let mediaType = "";
+  //differnt naming convention in the db so i just added media_type from props, and this also effects the url in media page
+  const mediaType = media_type || (media.name ? "tv-shows" : "movies");
 
-  //differnt naming convention in the db so i just added this
-  if (!media_type) {
-    mediaType = media.name ? "tv-shows" : "movies"; //this effects the url in media page
-  } else {
-    mediaType = media_type;
-  }
   const title = media.name || media.title;
 
   return (

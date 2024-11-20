@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import "./WatchlistFilter.css";
 
-const WatchlistFilter = (onStatusChange) => {
-  const statuses = ["All", "Watching", "Plan-to-Watch", "Watched"];
+const WatchlistFilter = ({ onStatusChange }) => {
+  const statuses = ["All", "watching", "plan-to-watch", "watched"];
   const [activeStatus, setActiveStatus] = useState("All");
 
   const handleStatusChange = (status) => {

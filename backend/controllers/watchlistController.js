@@ -155,6 +155,12 @@ export const updateWatchProgress = async (req, res) => {
 export const getAllWatchlistItems = async (req, res) => {
   const userId = req.query.userId;
 
+  if (!Number.isInteger(Number(userId))) {
+    return res
+      .status(400)
+      .json({ error: "Invalid userId. Must be an integer." });
+  }
+
   try {
     //Query the watchlist table to get media IDs and types
     const watchlistQuery = `
