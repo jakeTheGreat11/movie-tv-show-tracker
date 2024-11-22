@@ -4,6 +4,7 @@ import movieRoutes from "./routes/movieRoutes.js";
 import languageRoutes from "./routes/languageRoutes.js";
 import tvShowRoutes from "./routes/tvShowRoutes.js";
 import watchlistRoutes from "./routes/watchlistRoutes.js";
+import userRoutes from "./routes/userRoute.js";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
@@ -23,6 +24,7 @@ app.use("/api/movies", movieRoutes);
 app.use("/api/tv-shows", tvShowRoutes);
 app.use("/api/watchlist", watchlistRoutes);
 app.use("/api", languageRoutes);
+app.use("/api/user", userRoutes);
 
 app.get("/", (req, res) => {
   res.send("hello world");

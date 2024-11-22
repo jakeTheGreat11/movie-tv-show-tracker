@@ -1,9 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Header.css";
 import Avatar from "../common/Avatar";
 import logo from "../../assets/images/logo.png";
+import { useAuthStore } from "../../store/authStore";
 
 const Header = () => {
+  const { user } = useAuthStore();
+  const [avatarUrl, setAvatarUrl] = useState(null); // Local state for the avatar URL
+  console.log(user);
+
+  useEffect(() => {
+    if (user?.avatar) {
+      setAvatarUrl(user.avatar);
+      console.log("in if");
+    }
+  }, [user]);
+
   return (
     <div className="website-header">
       <nav>
@@ -14,7 +26,7 @@ const Header = () => {
                 <img
                   src={logo}
                   alt="Logo"
-                  style={{ width: "300px", height: "auto" }}
+                  style={{ width: "250px", height: "auto" }}
                 />
               </a>
             </strong>
@@ -34,7 +46,10 @@ const Header = () => {
             <a href="/tv-shows/discover">TV Shows</a>
           </li>
           <li>
-            <Avatar imageUrl={"https://picsum.photos/50"} />
+            <a href="/user/watchlist">Watchlist</a>
+          </li>
+          <li>
+            <Avatar imageUrl={avatarUrl || "/avatars/default-avatar.jpg"} />
           </li>
         </ul>
       </nav>
