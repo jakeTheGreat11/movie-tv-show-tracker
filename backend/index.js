@@ -5,6 +5,7 @@ import languageRoutes from "./routes/languageRoutes.js";
 import tvShowRoutes from "./routes/tvShowRoutes.js";
 import watchlistRoutes from "./routes/watchlistRoutes.js";
 import userRoutes from "./routes/userRoute.js";
+import searchRoutes from "./routes/searchRoutes.js";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
@@ -25,6 +26,7 @@ app.use("/api/tv-shows", tvShowRoutes);
 app.use("/api/watchlist", watchlistRoutes);
 app.use("/api", languageRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/search", searchRoutes);
 
 app.get("/", (req, res) => {
   res.send("hello world");

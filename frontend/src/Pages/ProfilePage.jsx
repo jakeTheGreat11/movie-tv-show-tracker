@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useAuthStore } from "../store/authStore";
 import { avatars } from "../utils/avatars";
-import updateAvatar from "../utils/api";
+import { updateAvatar } from "../utils/api";
 import "./ProfilePage.css";
 
 const ProfilePage = () => {
